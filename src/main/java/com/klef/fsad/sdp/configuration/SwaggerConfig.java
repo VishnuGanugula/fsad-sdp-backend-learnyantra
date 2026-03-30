@@ -13,7 +13,7 @@ public class SwaggerConfig
     public OpenAPI apiInfo() 
     {
         return new OpenAPI()
-                .info(new Info()
+                .info( new Info()
                         .title("LMS Backend API")
                         .version("1.0")
                         .description("API documentation for the Spring Boot Learning Management System"));
