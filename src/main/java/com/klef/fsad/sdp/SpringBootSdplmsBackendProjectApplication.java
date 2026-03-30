@@ -8,7 +8,11 @@ public class SpringBootSdplmsBackendProjectApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(SpringBootSdplmsBackendProjectApplication.class, args);
+<<<<<<< HEAD
 		System.out.println("Spring Boot SPDLMS Backend Project");
+=======
+		System.out.println("Spring Boot Project is running");
+>>>>>>> 43419e9 (authentication)
 	}
 
 }
