@@ -1,10 +1,14 @@
 package com.klef.fsad.sdp.controller;
 
 
+import java.util.List;
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.klef.fsad.sdp.entity.Courses;
 import com.klef.fsad.sdp.entity.Instructor;
 import com.klef.fsad.sdp.service.InstructorService;
 
@@ -42,6 +46,24 @@ public class InstructorController
 		{
 			return ResponseEntity.status(500).body("Internal Server Error");
 		}
+  }
+  
+  @GetMapping("/courses/{instructorid}")
+  public ResponseEntity<?> viewCoursesByInstructor(@PathVariable int instructorid)
+  {
+	  try
+	  {
+		  List<Courses> courses = instructorService.viewCourseDetailsByInstructor(instructorid);
+		  if(courses == null || courses.isEmpty())
+		  {
+			  return ResponseEntity.status(204).body("No Courses Found");
+		  }
+		  return ResponseEntity.status(200).body(courses);
+	  }
+	  catch (Exception e)
+	  {
+		  return ResponseEntity.status(500).body("Internal Server Error");
+	  }
   }
   
 }
