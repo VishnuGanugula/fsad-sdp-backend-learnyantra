@@ -65,5 +65,37 @@ public class InstructorController
 		  return ResponseEntity.status(500).body("Internal Server Error");
 	  }
   }
+
+  @PostMapping("/addcourse")
+  public ResponseEntity<String> addCourse(@RequestBody Courses course)
+  {
+	  try
+	  {
+		  String output = instructorService.addCourse(course);
+		  return ResponseEntity.status(201).body(output);
+	  }
+	  catch (Exception e)
+	  {
+		  return ResponseEntity.status(500).body("Internal Server Error");
+	  }
+  }
+  
+  @GetMapping("/course/{courseid}/students")
+  public ResponseEntity<?> getEnrolledStudents(@PathVariable long courseid)
+  {
+	  try
+	  {
+		  List<?> enrollments = instructorService.getEnrolledStudentsForCourse(courseid);
+		  if(enrollments == null || enrollments.isEmpty())
+		  {
+			  return ResponseEntity.status(204).body("No Students Enrolled");
+		  }
+		  return ResponseEntity.status(200).body(enrollments);
+	  }
+	  catch (Exception e)
+	  {
+		  return ResponseEntity.status(500).body("Internal Server Error");
+	  }
+  }
   
 }

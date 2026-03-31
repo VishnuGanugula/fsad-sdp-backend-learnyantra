@@ -22,6 +22,24 @@ public class CourseController
 	{
 		return "Course Controller Demo";
 	}
+
+	@GetMapping("/all")
+	public ResponseEntity<?> viewAllCourses()
+	{
+		try
+		{
+			List<Courses> courses = instructorService.viewAllCourses();
+			if(courses == null || courses.isEmpty())
+			{
+				return ResponseEntity.status(204).body("No Courses Found");
+			}
+			return ResponseEntity.ok(courses);
+		}
+		catch(Exception e)
+		{
+			return ResponseEntity.status(500).body("Error Fetching Courses");
+		}
+	}
 	
 	@GetMapping("/published")
 	public ResponseEntity<?> viewPublishedCourses()

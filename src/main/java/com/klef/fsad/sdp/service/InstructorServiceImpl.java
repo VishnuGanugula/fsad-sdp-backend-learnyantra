@@ -1,14 +1,17 @@
 package com.klef.fsad.sdp.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.klef.fsad.sdp.entity.Courses;
+import com.klef.fsad.sdp.entity.CourseEnrollment;
 import com.klef.fsad.sdp.entity.Instructor;
 import com.klef.fsad.sdp.entity.Student;
 import com.klef.fsad.sdp.repository.InstructorRepository;
+import com.klef.fsad.sdp.repository.CourseEnrollmentRepository;
 import com.klef.fsad.sdp.repository.CourseRepository;
 
 @Service
@@ -19,6 +22,9 @@ public class InstructorServiceImpl implements InstructorService
 	
 	@Autowired
 	private CourseRepository courseRepository;
+	
+	@Autowired
+	private CourseEnrollmentRepository courseEnrollmentRepository;
 
 	@Override
 	public Instructor verifyInstructorLogin(String email, String pwd) 
@@ -28,8 +34,9 @@ public class InstructorServiceImpl implements InstructorService
 
 	@Override
 	public String addCourse(Courses course) {
+		course.setPublished(false); // Admin must approve
 		courseRepository.save(course);
-		return "Course Added Successfully";
+		return "Course Added Successfully. Waiting for Admin Approval.";
 	}
 
 	@Override
@@ -42,17 +49,25 @@ public class InstructorServiceImpl implements InstructorService
 		courseRepository.deleteById(courseid);
 		return "Course Deleted Successfully";
 	}
-/*
+
 	@Override
-	public List<Student> viewStudentsRegisteredInCourse(int courseid) {
-		Courses course = courseRepository.findById(courseid).orElse(null);
-		if(course != null)
-		{
-			return course.getStudents();
-		}
-		return null;
+	public List<Student> viewStudentsRegisteredInCourse(long courseid) {
+		List<CourseEnrollment> enrollments = courseEnrollmentRepository.findByCourseId(courseid);
+		return enrollments.stream()
+				.map(CourseEnrollment::getStudent)
+				.collect(Collectors.toList());
 	}
-*/
+
+	@Override
+	public List<CourseEnrollment> getEnrolledStudentsForCourse(long courseId) {
+		return courseEnrollmentRepository.findByCourseId(courseId);
+	}
+
+	@Override
+	public List<Courses> viewAllCourses() {
+		return courseRepository.findAll();
+	}
+
 	@Override
 	public List<Courses> viewPublishedCourses() {
 		return courseRepository.findPublishedCourses();
