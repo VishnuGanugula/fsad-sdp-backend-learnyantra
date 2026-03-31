@@ -19,9 +19,9 @@ public class AdminController {
 	@Autowired
 	private AdminService adminService;
 	@GetMapping("/")
-	public String index()
+	public String home()
 	{
-		return "Full Stack SDP Project";
+		return "LMS Backend Project";
 	}
 	
 	@PostMapping("/login")
