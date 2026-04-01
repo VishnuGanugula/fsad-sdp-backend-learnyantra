@@ -1,6 +1,7 @@
 package com.klef.fsad.sdp.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.klef.fsad.sdp.entity.Admin;
@@ -10,4 +11,11 @@ public interface AdminRepository extends JpaRepository<Admin,String>
 { 
    // select a from Admin a where a.username=?1 and a.password=?1
    Admin findByUsernameAndPassword(String username, String password);
+   
+// JPQL Version (Internal fallback)
+   @Query("SELECT a FROM Admin a WHERE a.username=?1 AND a.password=?2")
+   Admin checkAdminLogin(String username, String password);
+
+   // Useful for checking if Admin exists before login attempts
+   boolean existsByUsername(String username);
 }

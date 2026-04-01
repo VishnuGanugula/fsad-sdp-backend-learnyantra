@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 <modelVersion>4.0.0</modelVersion>
 <parent>
@@ -28,7 +29,6 @@
 </scm>
 <properties>
 <java.version>21</java.version>
-<lombok.version>1.18.36</lombok.version>
 </properties>
 <dependencies>
 <!--  JPA / Hibernate  -->
@@ -74,7 +74,13 @@
 <groupId>org.springframework.boot</groupId>
 <artifactId>spring-boot-starter-mail</artifactId>
 </dependency>
-
+<!--  Lombok  -->
+<dependency>
+<groupId>org.projectlombok</groupId>
+<artifactId>lombok</artifactId>
+<version>1.18.30</version>
+<optional>true</optional>
+</dependency>
 <!--  SLF4J (managed by Spring Boot BOM — explicit version not needed)  -->
 <dependency>
 <groupId>org.slf4j</groupId>
@@ -86,8 +92,31 @@
 <plugin>
 <groupId>org.apache.maven.plugins</groupId>
 <artifactId>maven-compiler-plugin</artifactId>
+<version>3.10.1</version>
+<configuration>
+<source>21</source>
+<target>21</target>
+<annotationProcessorPaths>
+<annotationProcessorPath>
+<groupId>org.projectlombok</groupId>
+<artifactId>lombok</artifactId>
+<version>1.18.30</version>
+</annotationProcessorPath>
+</annotationProcessorPaths>
+</configuration>
 </plugin>
-
+<plugin>
+<groupId>org.springframework.boot</groupId>
+<artifactId>spring-boot-maven-plugin</artifactId>
+<configuration>
+<excludes>
+<exclude>
+<groupId>org.projectlombok</groupId>
+<artifactId>lombok</artifactId>
+</exclude>
+</excludes>
+</configuration>
+</plugin>
 </plugins>
 </build>
 </project>

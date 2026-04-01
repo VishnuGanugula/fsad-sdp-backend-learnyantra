@@ -1,28 +1,36 @@
 package com.klef.fsad.sdp.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.klef.fsad.sdp.entity.Admin;
+import com.klef.fsad.sdp.entity.Instructor;
+import com.klef.fsad.sdp.entity.Student;
 import com.klef.fsad.sdp.service.AdminService;
-
-import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("adminapi")
 @CrossOrigin("*")
-public class AdminController {
+public class AdminController 
+{
 	@Autowired
 	private AdminService adminService;
+	
 	@GetMapping("/")
-	public String index()
+	public String home()
 	{
-		return "Full Stack SDP Project";
+		return "LMS Backend Project";
 	}
 	
 	@PostMapping("/login")
@@ -32,7 +40,7 @@ public class AdminController {
 		{
 			Admin a = adminService.verifyAdminLogin(admin.getUsername(), admin.getPassword());
 		
-		    if(a!=null)
+		    if(a != null)
 		    {
 		    	return ResponseEntity.status(200).body(admin);
 		    }
@@ -46,5 +54,19 @@ public class AdminController {
 			System.out.println(e.getMessage());
 			return ResponseEntity.status(500).body("Internal Server Error");
 		}
+	}
+	
+	@PostMapping("/addinstructor")
+	public ResponseEntity<String> addinstructor(@RequestBody Instructor instructor)
+	{
+		   try
+		   {
+			   String output = adminService.addInstructor(instructor);
+			   return ResponseEntity.status(201).body(output);
+		   }
+		   catch(Exception e)
+		   {
+			   return ResponseEntity.status(500).body("Error adding instructor: " + e.getMessage());
+		   }
 	}
 }
