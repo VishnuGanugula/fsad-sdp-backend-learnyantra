@@ -11,7 +11,6 @@ import com.klef.fsad.sdp.entity.Instructor;
 import com.klef.fsad.sdp.entity.Student;
 import com.klef.fsad.sdp.repository.AdminRepository;
 import com.klef.fsad.sdp.repository.InstructorRepository;
-//import com.klef.fsad.sdp.repository.InstructorRepository;
 import com.klef.fsad.sdp.repository.StudentRepository;
 
 @Service
@@ -39,20 +38,22 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	public List<Instructor> viewAllInstructors() {
-		// TODO Auto-generated method stub
-		return null;
+		return instructorRepository.findAll();
 	}
 
 	@Override
 	public boolean deleteInstructor(int id) {
-		// TODO Auto-generated method stub
+		if(instructorRepository.existsById(id))
+		{
+			instructorRepository.deleteById(id);
+			return true;
+		}
 		return false;
 	}
 
 	@Override
 	public List<Student> viewAllStudents() {
-		// TODO Auto-generated method stub
-		return null;
+		return studentRepository.findAll();
 	}
 
 	@Override
