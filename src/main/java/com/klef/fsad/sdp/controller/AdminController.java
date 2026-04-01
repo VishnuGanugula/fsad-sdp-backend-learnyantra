@@ -116,7 +116,33 @@ public class AdminController
 	        return ResponseEntity.status(500).body("Error Fetching Students");
 	    }
 	}
-	
-	
+	@DeleteMapping("/deletestudent")
+	public ResponseEntity<String> deletestudent(@RequestParam int id)
+	{
+	      try
+	      {
+	          String output = adminService.deleteStudent(id);
+	          return ResponseEntity.status(200).body(output);
+	      }
+	      catch(Exception e)
+	      {
+	          return ResponseEntity.status(500).body("Internal Server Error");
+	      }
+	}
+
+	@GetMapping("/status")
+	public ResponseEntity<?> getStatus() 
+	{
+		try 
+		{
+			long studentCount = adminService.getStudentCount();
+			long instructorCount = adminService.getInstructorCount();
+			return ResponseEntity.ok("Students: " + studentCount + ", Instructors: " + instructorCount);
+		} 
+		catch (Exception e) 
+		{
+			return ResponseEntity.status(500).body("Error fetching status");
+		}
+	}
 	
 }

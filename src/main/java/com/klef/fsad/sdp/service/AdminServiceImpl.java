@@ -58,20 +58,27 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	public String deleteStudent(int id) {
-		// TODO Auto-generated method stub
-		return null;
+Optional<Student> optional = studentRepository.findById(id);
+		
+		if(optional.isPresent())
+		{
+			studentRepository.deleteById(id);
+			return "Student Deleted Successfully";
+		}
+		else
+		{
+			return "Student ID Not Found to Delete";
+		}
 	}
 
 	@Override
 	public long getStudentCount() {
-		// TODO Auto-generated method stub
-		return 0;
+		return studentRepository.count();
 	}
 
 	@Override
 	public long getInstructorCount() {
-		// TODO Auto-generated method stub
-		return 0;
+		return instructorRepository.count();
 	}
 
 	
