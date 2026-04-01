@@ -14,6 +14,12 @@ import com.klef.fsad.sdp.repository.StudentRepository;
 //import com.klef.fsad.sdp.repository.CourseRepository;
 //import com.klef.fsad.sdp.repository.CourseEnrollmentRepository;
 
+import com.klef.fsad.sdp.entity.CourseEnrollment;
+import com.klef.fsad.sdp.entity.Courses;
+import com.klef.fsad.sdp.entity.Student;
+import com.klef.fsad.sdp.repository.StudentRepository;
+
+
 @Service
 public class StudentServiceImpl implements StudentService
 {
@@ -21,11 +27,13 @@ public class StudentServiceImpl implements StudentService
 	@Autowired
 	private StudentRepository studentRepository;
 	
+
 	/*@Autowired
 	private CourseRepository courseRepository;*/
 	
 	@Autowired
 	//private CourseEnrollmentRepository courseEnrollmentRepository;
+
 	
 	@Override
 	public String studentRegistration(Student student) 
@@ -40,7 +48,7 @@ public class StudentServiceImpl implements StudentService
 		return studentRepository.findByEmailAndPassword(email, pwd);
 	}
 
-	@Override
+	/*@Override
 	public String updateStudentProfile(Student student) 
 	{
 		Optional<Student> optional = studentRepository.findById(student.getId());
@@ -64,9 +72,13 @@ public class StudentServiceImpl implements StudentService
 			return "Student ID Not Found to Update";
 		}
 		
-	}
+	}*/
+
 
 	/*@Override
+=======
+	@Override
+>>>>>>> 5db90e26cc0e08a608ba8a7dfee262b1c7ba76e3
 	public String enrollInCourse(int studentId, long courseId) 
 	{
 		try 
@@ -77,14 +89,22 @@ public class StudentServiceImpl implements StudentService
 				return "Student Not Found";
 			}
 
+<<<<<<< HEAD
 			//Courses course = courseRepository.findById((int)courseId).orElse(null);
+=======
+			Courses course = courseRepository.findById((int)courseId).orElse(null);
+>>>>>>> 5db90e26cc0e08a608ba8a7dfee262b1c7ba76e3
 			if(course == null)
 			{
 				return "Course Not Found";
 			}
 
 			// Check if already enrolled
+<<<<<<< HEAD
 			CourseEnrollment existing = courseEnrollmentRepository.findByStudentIdAndCourseId(studentId, courseId);
+=======
+			CourseEnrollment existing = courseEnrollmentRepository.findByStudentAndCourse(studentId, courseId);
+>>>>>>> 5db90e26cc0e08a608ba8a7dfee262b1c7ba76e3
 			if(existing != null)
 			{
 				return "Already Enrolled In This Course";
@@ -100,6 +120,7 @@ public class StudentServiceImpl implements StudentService
 		{
 			return "Error during enrollment: " + e.getMessage();
 		}
+<<<<<<< HEAD
 	}*/
 
 	//@Override
@@ -108,6 +129,16 @@ public class StudentServiceImpl implements StudentService
 		try 
 		{
 			CourseEnrollment enrollment = courseEnrollmentRepository.findByStudentIdAndCourseId(studentId, courseId);
+=======
+	}
+
+	@Override
+	public String unenrollFromCourse(int studentId, long courseId) 
+	{
+		try 
+		{
+			CourseEnrollment enrollment = courseEnrollmentRepository.findByStudentAndCourse(studentId, courseId);
+>>>>>>> 5db90e26cc0e08a608ba8a7dfee262b1c7ba76e3
 			if(enrollment == null)
 			{
 				return "Not Enrolled In This Course";
@@ -135,7 +166,7 @@ public class StudentServiceImpl implements StudentService
 		return enrollments.stream()
 				.map(CourseEnrollment::getCourse)
 				.collect(Collectors.toList());
+<<<<<<< HEAD
 	}*/
-
 }
 
