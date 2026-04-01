@@ -98,4 +98,22 @@ public class InstructorController
 	  }
   }
   
+  @DeleteMapping("/deletecourse/{courseid}")
+  public ResponseEntity<String> deleteCourse(@PathVariable int courseid)
+  {
+	  try
+	  {
+		  String output = instructorService.deleteCourse(courseid);
+		  if(output.contains("Successfully"))
+		  {
+			  return ResponseEntity.status(200).body(output);
+		  }
+		  return ResponseEntity.status(404).body(output);
+	  }
+	  catch (Exception e)
+	  {
+		  return ResponseEntity.status(500).body("Internal Server Error");
+	  }
+  }
+  
 }

@@ -69,4 +69,5 @@ public class AdminController
 			   return ResponseEntity.status(500).body("Error adding instructor: " + e.getMessage());
 		   }
 	}
+
 }

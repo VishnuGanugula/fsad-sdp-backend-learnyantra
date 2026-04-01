@@ -9,16 +9,15 @@ import com.klef.fsad.sdp.entity.Student;
 public interface AdminService {
 	
 	public Admin verifyAdminLogin(String username,String password);
-	
+	//Instructor
 	public String addInstructor(Instructor instructor);
     public List<Instructor> viewAllInstructors();
     public boolean deleteInstructor(int id); 
     
-    // Student Management
+    //Student Management
     public List<Student> viewAllStudents();
     public String deleteStudent(int id); 
-    
-    // Dashboard Status
+    //Dashboard
     public long getStudentCount();
     public long getInstructorCount();
 }

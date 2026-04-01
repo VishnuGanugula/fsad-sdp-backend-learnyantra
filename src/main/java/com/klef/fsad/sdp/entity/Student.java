@@ -8,8 +8,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+
 import jakarta.persistence.Table;
 
 @Entity
@@ -39,9 +41,11 @@ public class Student
 	@Column(updatable = false) // Prevents updating this value later
 	private LocalDateTime registeredAt;
 	
+
 	@ManyToOne
 	@JoinColumn(name = "course_id")
 	private Courses course;
+
 	
 	public int getId() {
 		return id;
@@ -103,8 +107,9 @@ public class Student
 	public void setGender(String gender) {
 		this.gender = gender;
 	}
-	public Courses getCourse() {
-		return course;
+
+public Courses getCourse() {
+	return course;
 	}
 	public void setCourse(Courses course) {
 		this.course = course;
@@ -115,7 +120,11 @@ public class Student
 				+ ", firstName=" + firstName + ", lastName=" + lastName + ", contact=" + contact + ", gender=" + gender
 				+ ", location=" + location + ", registeredAt=" + registeredAt + ", course=" + course + "]";
 	}
+
 }
+
+
+
 /*
 
 id: Long (Primary Key)
@@ -132,4 +141,6 @@ role: Enum (ADMIN, INSTRUCTOR, STUDENT)
 
 createdAt: LocalDateTime
 
+<<<<<<< HEAD
 */
+

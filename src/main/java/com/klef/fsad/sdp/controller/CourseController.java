@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.klef.fsad.sdp.entity.Courses;
-import com.klef.fsad.sdp.service.InstructorService;
+import com.klef.fsad.sdp.service.CourseService;
 
 @RestController
 @RequestMapping("courseapi")
@@ -15,7 +15,7 @@ import com.klef.fsad.sdp.service.InstructorService;
 public class CourseController 
 {
 	@Autowired
-	private InstructorService instructorService;
+	private CourseService courseService;
 	
 	@GetMapping("/")
 	public String coursehome()
@@ -28,7 +28,7 @@ public class CourseController
 	{
 		try
 		{
-			List<Courses> courses = instructorService.viewAllCourses();
+			List<Courses> courses = courseService.viewAllCourses();
 			if(courses == null || courses.isEmpty())
 			{
 				return ResponseEntity.status(204).body("No Courses Found");
@@ -46,7 +46,7 @@ public class CourseController
 	{
 		try
 		{
-			List<Courses> courses = instructorService.viewPublishedCourses();
+			List<Courses> courses = courseService.getAllPublishedCourses();
 			
 			if(courses == null || courses.isEmpty())
 			{
@@ -66,7 +66,7 @@ public class CourseController
 	{
 		try
 		{
-			List<Courses> courses = instructorService.searchCourses(keyword);
+			List<Courses> courses = courseService.searchCoursesByKeyword(keyword);
 			
 			if(courses == null || courses.isEmpty())
 			{
@@ -86,12 +86,30 @@ public class CourseController
 	{
 		try
 		{
-			String output = instructorService.updateCourseStatus(id, status);
+			String output = courseService.toggleCourseStatus(id, status);
 			return ResponseEntity.ok(output);
 		}
 		catch(Exception e)
 		{
 			return ResponseEntity.status(500).body("Error Updating Status");
+		}
+	}
+	
+	@GetMapping("/{id}")
+	public ResponseEntity<?> getCourseById(@PathVariable int id)
+	{
+		try
+		{
+			Courses course = courseService.getCourseById(id);
+			if(course != null)
+			{
+				return ResponseEntity.ok(course);
+			}
+			return ResponseEntity.status(404).body("Course Not Found");
+		}
+		catch(Exception e)
+		{
+			return ResponseEntity.status(500).body("Error Fetching Course Details");
 		}
 	}
 }

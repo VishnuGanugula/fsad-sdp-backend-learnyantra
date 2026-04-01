@@ -126,3 +126,4 @@ public interface StudentRepository extends JpaRepository<Student, Integer>
     //update and delete queries
 	
 }
+

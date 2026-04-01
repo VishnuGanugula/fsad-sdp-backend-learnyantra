@@ -18,5 +18,6 @@ public interface CourseEnrollmentRepository extends JpaRepository<CourseEnrollme
 	List<CourseEnrollment> findByStudentId(int studentId);
 	
 	@Query("SELECT ce FROM CourseEnrollment ce WHERE ce.student.id = ?1 AND ce.course.id = ?2")
-	CourseEnrollment findByStudentAndCourse(int studentId, long courseId);
+	CourseEnrollment findByStudentIdAndCourseId(int studentId, long courseId);
+	
 }
