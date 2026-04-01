@@ -56,7 +56,7 @@ public class AdminController
 		}
 	}
 	
-	/*@PostMapping("/addinstructor")
+	@PostMapping("/addinstructor")
 	public ResponseEntity<String> addinstructor(@RequestBody Instructor instructor)
 	{
 		   try
@@ -68,84 +68,7 @@ public class AdminController
 		   {
 			   return ResponseEntity.status(500).body("Error adding instructor: " + e.getMessage());
 		   }
-	}*/
-	
-	/*@GetMapping("/viewallinstructors")
-	public ResponseEntity<?> viewallinstructors()
-	{
-	    try
-	    {
-	        List<Instructor> instructors = adminService.viewAllInstructors();
-	        return ResponseEntity.ok(instructors);
-	    }
-	    catch(Exception e)
-	    {
-	        return ResponseEntity.status(500).body("Error Fetching Instructors");
-	    }
 	}
 	
-	@DeleteMapping("/deleteinstructor/{id}")
-	public ResponseEntity<String> deleteInstructor(@PathVariable int id)
-	{
-	    try
-	    {
-	        boolean deleted = adminService.deleteInstructor(id);
-
-	        if(deleted)
-	        {
-	            return ResponseEntity.ok("Instructor Deleted Successfully");
-	        }
-	        else
-	        {
-	            return ResponseEntity.status(404).body("Instructor Not Found");
-	        }
-	    }
-	    catch(Exception e)
-	    {
-	        return ResponseEntity.status(500).body("Internal Server Error: " + e.getMessage());
-	    }
-	}
 	
-	@GetMapping("/viewallstudents")
-	public ResponseEntity<?> viewAllStudents()
-	{
-	    try
-	    {
-	        List<Student> students = adminService.viewAllStudents();
-	        return ResponseEntity.ok(students);
-	    }
-	    catch(Exception e)
-	    {
-	        return ResponseEntity.status(500).body("Error Fetching Students");
-	    }
-	}
-	
-	@DeleteMapping("/deletestudent")
-	public ResponseEntity<String> deletestudent(@RequestParam int id)
-	{
-	      try
-	      {
-	          String output = adminService.deleteStudent(id);
-	          return ResponseEntity.status(200).body(output);
-	      }
-	      catch(Exception e)
-	      {
-	          return ResponseEntity.status(500).body("Internal Server Error");
-	      }
-	}
-
-	@GetMapping("/status")
-	public ResponseEntity<?> getStatus() 
-	{
-		try 
-		{
-			long studentCount = adminService.getStudentCount();
-			long instructorCount = adminService.getInstructorCount();
-			return ResponseEntity.ok("Students: " + studentCount + ", Instructors: " + instructorCount);
-		} 
-		catch (Exception e) 
-		{
-			return ResponseEntity.status(500).body("Error fetching status");
-		}
-	}*/
 }

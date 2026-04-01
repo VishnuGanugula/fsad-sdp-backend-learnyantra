@@ -10,6 +10,7 @@ import com.klef.fsad.sdp.entity.Admin;
 import com.klef.fsad.sdp.entity.Instructor;
 import com.klef.fsad.sdp.entity.Student;
 import com.klef.fsad.sdp.repository.AdminRepository;
+import com.klef.fsad.sdp.repository.InstructorRepository;
 //import com.klef.fsad.sdp.repository.InstructorRepository;
 import com.klef.fsad.sdp.repository.StudentRepository;
 
@@ -18,11 +19,11 @@ public class AdminServiceImpl implements AdminService {
 	@Autowired
 	private AdminRepository adminRepository;
 	
-	//@Autowired
-	//private InstructorRepository instructorRepository;
+	@Autowired
+	private InstructorRepository instructorRepository;
 	
-	//@Autowired
-	//private StudentRepository studentRepository;
+	@Autowired
+	private StudentRepository studentRepository;
 
 	@Override
 	public Admin verifyAdminLogin(String username, String password) {
@@ -30,62 +31,48 @@ public class AdminServiceImpl implements AdminService {
 		
 	}
 
-	/*@Override
-	public String addInstructor(Instructor instructor) 
-	{
+	@Override
+	public String addInstructor(Instructor instructor) {
 		instructorRepository.save(instructor);
 		return "Instructor Added Successfully";
 	}
 
 	@Override
-	public List<Instructor> viewAllInstructors() 
-	{
-		return instructorRepository.findAll();
+	public List<Instructor> viewAllInstructors() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
-	public boolean deleteInstructor(int id) 
-	{
-		if(instructorRepository.existsById(id))
-		{
-			instructorRepository.deleteById(id);
-			return true;
-		}
+	public boolean deleteInstructor(int id) {
+		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public List<Student> viewAllStudents() 
-	{
-		return studentRepository.findAll();
+	public List<Student> viewAllStudents() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
-	public String deleteStudent(int id) 
-	{
-		Optional<Student> optional = studentRepository.findById(id);
-		
-		if(optional.isPresent())
-		{
-			studentRepository.deleteById(id);
-			return "Student Deleted Successfully";
-		}
-		else
-		{
-			return "Student ID Not Found to Delete";
-		}
+	public String deleteStudent(int id) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
-	public long getStudentCount() 
-	{
-		return studentRepository.count();
+	public long getStudentCount() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	@Override
-	public long getInstructorCount() 
-	{
-		return instructorRepository.count();
-	}*/
+	public long getInstructorCount() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	
 
 }
