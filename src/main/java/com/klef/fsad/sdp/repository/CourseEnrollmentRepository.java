@@ -11,13 +11,13 @@ import com.klef.fsad.sdp.entity.CourseEnrollment;
 @Repository
 public interface CourseEnrollmentRepository extends JpaRepository<CourseEnrollment, Long>
 {
-	@Query("SELECT ce FROM CourseEnrollment ce WHERE ce.course.id = ?1")
+	//SELECT ce FROM CourseEnrollment ce WHERE ce.course.id = ?1
 	List<CourseEnrollment> findByCourseId(long courseId);
 	
-	@Query("SELECT ce FROM CourseEnrollment ce WHERE ce.student.id = ?1")
+	//SELECT ce FROM CourseEnrollment ce WHERE ce.student.id = ?1
 	List<CourseEnrollment> findByStudentId(int studentId);
 	
-	@Query("SELECT ce FROM CourseEnrollment ce WHERE ce.student.id = ?1 AND ce.course.id = ?2")
+	//SELECT ce FROM CourseEnrollment ce WHERE ce.student.id = ?1 AND ce.course.id = ?2
 	CourseEnrollment findByStudentIdAndCourseId(int studentId, long courseId);
 	
 }

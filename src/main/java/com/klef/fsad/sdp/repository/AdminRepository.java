@@ -11,11 +11,5 @@ public interface AdminRepository extends JpaRepository<Admin,String>
 { 
    // select a from Admin a where a.username=?1 and a.password=?1
    Admin findByUsernameAndPassword(String username, String password);
-   
-// JPQL Version (Internal fallback)
-   @Query("SELECT a FROM Admin a WHERE a.username=?1 AND a.password=?2")
-   Admin checkAdminLogin(String username, String password);
-
-   // Useful for checking if Admin exists before login attempts
-   boolean existsByUsername(String username);
+  
 }
