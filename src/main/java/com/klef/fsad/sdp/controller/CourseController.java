@@ -72,7 +72,7 @@ public class CourseController
 			
 			if(!courses.isEmpty())
 			{
-				return ResponseEntity.ok(courses);
+				return ResponseEntity.ok().body(courses);
 	
 				
 			}else {
