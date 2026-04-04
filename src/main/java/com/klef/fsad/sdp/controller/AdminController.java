@@ -84,24 +84,13 @@ public class AdminController
 	    }
 	}
 	@DeleteMapping("/deleteinstructor/{id}")
-	public ResponseEntity<String> deleteInstructor(@PathVariable int id)
-	{
-	    try
-	    {
-	        boolean deleted = adminService.deleteInstructor(id);
+	public ResponseEntity<String> deleteInstructor(@PathVariable int id) {
+	    boolean deleted = adminService.deleteInstructor(id);
 
-	        if(deleted)
-	        {
-	            return ResponseEntity.ok("Instructor Deleted Successfully");
-	        }
-	        else
-	        {
-	            return ResponseEntity.status(404).body("Instructor Not Found");
-	        }
-	    }
-	    catch(Exception e)
-	    {
-	        return ResponseEntity.status(500).body("Internal Server Error: " + e.getMessage());
+	    if (deleted) {
+	        return ResponseEntity.ok("Instructor Deleted Successfully");
+	    } else {
+	        return ResponseEntity.status(404).body("Instructor Not Found");
 	    }
 	}
 	@GetMapping("/viewallstudents")
