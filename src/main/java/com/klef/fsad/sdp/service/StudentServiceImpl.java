@@ -42,6 +42,12 @@ public class StudentServiceImpl implements StudentService
 	}
 
 	@Override
+	public Student getStudentById(int id)
+	{
+		return studentRepository.findById(id).orElse(null);
+	}
+
+	@Override
 	public String updateStudentProfile(Student student) 
 	{
 		Optional<Student> optional = studentRepository.findById(student.getId());
@@ -55,8 +61,7 @@ public class StudentServiceImpl implements StudentService
 			s.setFirstName(student.getFirstName());
 			s.setPassword(student.getPassword());
 			
-			// FIX: Added missing save() — without this, changes were never persisted to the DB
-			//studentRepository.save(s);
+			studentRepository.save(s);
 			
 			return "Student Profile Updated Successfully";
 		}
@@ -92,7 +97,10 @@ public class StudentServiceImpl implements StudentService
 			}
 
 			// Create new enrollment
-			CourseEnrollment enrollment = new CourseEnrollment(student, course);
+			CourseEnrollment enrollment = new CourseEnrollment();
+			enrollment.setStudent(student);
+			enrollment.setCourse(course);
+			enrollment.setProgress(0.0);
 			courseEnrollmentRepository.save(enrollment);
 			
 			return "Enrolled Successfully";

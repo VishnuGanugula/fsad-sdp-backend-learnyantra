@@ -9,6 +9,8 @@ package com.klef.fsad.sdp.service;
 	import com.klef.fsad.sdp.repository.CourseEnrollmentRepository;
 	import com.klef.fsad.sdp.repository.StudentRepository;
 	import com.klef.fsad.sdp.repository.CourseRepository;
+	
+	
 	@Service
 	public class CourseEnrollmentServiceImpl implements CourseEnrollmentService {
 
@@ -77,8 +79,6 @@ package com.klef.fsad.sdp.service;
 	    @Override
 	    public boolean isStudentEnrolled(int studentId, long courseId) {
 	        return enrollmentRepo
-	                .findByStudentIdAndCourseId(studentId, courseId) != null;
+	                .findByStudentIdAndCourseId(studentId, courseId) != null; // if the student is registered it returns the true value which mean it is not null
 	    }
 	}
-	  
-

@@ -13,6 +13,7 @@ public  interface StudentService
 {	
 	public String studentRegistration(Student student);
 	public Student verfiyStudentLogin(String email, String pwd);
+	public Student getStudentById(int id);
 	public String updateStudentProfile(Student student);
 	
 	public String enrollInCourse(int studentId, long courseId);

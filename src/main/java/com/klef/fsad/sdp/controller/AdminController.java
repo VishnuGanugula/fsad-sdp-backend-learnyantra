@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.klef.fsad.sdp.dto.StudentDTO;
 import com.klef.fsad.sdp.entity.Admin;
 import com.klef.fsad.sdp.entity.Instructor;
 import com.klef.fsad.sdp.entity.Student;
@@ -42,7 +43,7 @@ public class AdminController
 		
 		    if(a != null)
 		    {
-		    	return ResponseEntity.status(200).body(admin);
+		    	return ResponseEntity.status(200).body(a);
 		    }
 		    else
 		    {
@@ -115,6 +116,20 @@ public class AdminController
 	    {
 	        return ResponseEntity.status(500).body("Error Fetching Students");
 	    }
+	}
+
+	@GetMapping("/displayallstudentsdto")
+	public ResponseEntity<?> displayAllStudentsDTO()
+	{
+		try
+		{
+			List<StudentDTO> students = adminService.displayAllStudentsDTO();
+			return ResponseEntity.ok(students);
+		}
+		catch(Exception e)
+		{
+			return ResponseEntity.status(500).body("Error Fetching Students");
+		}
 	}
 	@DeleteMapping("/deletestudent")
 	public ResponseEntity<String> deletestudent(@RequestParam int id)

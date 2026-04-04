@@ -35,14 +35,6 @@ public class CourseEnrollment
 	
 	@Column(nullable = false)
 	private double progress = 0.0;
-	
-	public CourseEnrollment() {}
-	
-	public CourseEnrollment(Student student, Courses course) {
-		this.student = student;
-		this.course = course;
-		this.progress = 0.0;
-	}
 
 	public long getId() {
 		return id;

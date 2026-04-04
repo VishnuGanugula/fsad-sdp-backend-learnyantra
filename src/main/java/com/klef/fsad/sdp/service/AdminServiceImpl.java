@@ -2,10 +2,12 @@ package com.klef.fsad.sdp.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.klef.fsad.sdp.dto.StudentDTO;
 import com.klef.fsad.sdp.entity.Admin;
 import com.klef.fsad.sdp.entity.Instructor;
 import com.klef.fsad.sdp.entity.Student;
@@ -79,6 +81,25 @@ Optional<Student> optional = studentRepository.findById(id);
 	@Override
 	public long getInstructorCount() {
 		return instructorRepository.count();
+	}
+
+	@Override
+	public StudentDTO studentToStudentDTO(Student student) {
+		StudentDTO dto = new StudentDTO();
+		dto.setId(student.getId());
+		dto.setFirstName(student.getFirstName());
+		dto.setLastName(student.getLastName());
+		dto.setGender(student.getGender());
+		dto.setLocation(student.getLocation());
+		return dto;
+	}
+
+	@Override
+	public List<StudentDTO> displayAllStudentsDTO() {
+		List<Student> students = viewAllStudents();
+		return students.stream()
+				.map(this::studentToStudentDTO)
+				.collect(Collectors.toList());
 	}
 
 	
