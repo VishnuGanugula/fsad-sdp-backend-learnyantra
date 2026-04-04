@@ -19,4 +19,5 @@ public interface InstructorService
 	public List<Courses> viewPublishedCourses();
 	public List<Courses> searchCourses(String keyword);
 	public String updateCourseStatus(int id, boolean status);
+	public List<InstructorDTO> viewAllInstructors();
 }

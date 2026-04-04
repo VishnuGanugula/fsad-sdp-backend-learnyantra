@@ -1,4 +1,5 @@
 package com.klef.fsad.sdp.entity;
+
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -9,6 +10,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.ManyToOne;      
+import jakarta.persistence.JoinColumn;    
 
 @Entity
 @Table(name = "student_table")
@@ -34,10 +37,14 @@ public class Student
 	@Column(nullable = false,length = 100)
 	private String location;
 	@CreationTimestamp
-	@Column(updatable = false) // Prevents updating this value later
+	@Column(updatable = false)
 	private LocalDateTime registeredAt;
 
 	
+	@ManyToOne
+	@JoinColumn(name = "course_id")
+	private Courses course;
+
 	public int getId() {
 		return id;
 	}
@@ -98,32 +105,19 @@ public class Student
 	public void setGender(String gender) {
 		this.gender = gender;
 	}
+
+	
+	public Courses getCourse() {
+		return course;
+	}
+	public void setCourse(Courses course) {
+		this.course = course;
+	}
+
 	@Override
 	public String toString() {
 		return "Student [id=" + id + ", username=" + username + ", password=" + password + ", email=" + email
 				+ ", firstName=" + firstName + ", lastName=" + lastName + ", contact=" + contact + ", gender=" + gender
 				+ ", location=" + location + ", registeredAt=" + registeredAt + "]";
 	}
-
 }
-
-
-
-/*
-
-id: Long (Primary Key)
-
-username: String (Unique)
-
-password: String (Encrypted)
-
-email: String (Unique)
-
-firstName / lastName: String
-
-role: Enum (ADMIN, INSTRUCTOR, STUDENT)
-
-createdAt: LocalDateTime
-
-*/
-

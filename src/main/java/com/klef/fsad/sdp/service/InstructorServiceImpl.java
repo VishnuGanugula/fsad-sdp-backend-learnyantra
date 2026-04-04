@@ -88,4 +88,28 @@ public class InstructorServiceImpl implements InstructorService
 		}
 		return "Course Not Found";
 	}
+
+	@Override
+	public List<InstructorDTO> viewAllInstructors() 
+	{
+		List<Instructor> instructors = instructorRepository.findAll();
+		
+		List<InstructorDTO> dtoList = new java.util.ArrayList<>();
+		
+		for(Instructor ins : instructors)
+		{
+			InstructorDTO dto = new InstructorDTO();
+			dto.setId(ins.getId());
+			dto.setUsername(ins.getUsername());
+			dto.setEmail(ins.getEmail());
+			dto.setFirstName(ins.getFirstName());
+			dto.setLastName(ins.getLastName());
+			dto.setGender(ins.getGender());
+			dto.setLocation(ins.getLocation());
+			
+			dtoList.add(dto);
+		}
+		
+		return dtoList;
+	}
 }

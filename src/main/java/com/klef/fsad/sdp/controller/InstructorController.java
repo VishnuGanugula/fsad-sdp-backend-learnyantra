@@ -114,4 +114,24 @@ public class InstructorController
 		  return ResponseEntity.status(500).body("Internal Server Error");
 	  }
   }
+
+  @GetMapping("/viewall")
+  public ResponseEntity<?> viewAllInstructors()
+  {
+	  try
+	  {
+		  List<InstructorDTO> list = instructorService.viewAllInstructors();
+		  
+		  if(list == null || list.isEmpty())
+		  {
+			  return ResponseEntity.status(204).body("No Instructors Found");
+		  }
+		  
+		  return ResponseEntity.status(200).body(list);
+	  }
+	  catch(Exception e)
+	  {
+		  return ResponseEntity.status(500).body("Internal Server Error");
+	  }
+  }
 }
