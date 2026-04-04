@@ -1,5 +1,6 @@
 package com.klef.fsad.sdp.entity;
 
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -8,7 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Courses 
@@ -30,10 +31,12 @@ public class Courses
     private boolean isPublished;
     
     @ManyToOne
-    @JoinColumn(name = "instructor_id") // foreign key column
+    @JoinColumn(name = "instructor_id")
     private Instructor instructor;
     
- 
+    @OneToMany(mappedBy = "course")
+    private List<Student> students;
+
 	public long getId() {
 		return id;
 	}
@@ -78,8 +81,15 @@ public class Courses
 		return instructor;
 	}
 
-
 	public void setInstructor(Instructor instructor) {
 		this.instructor = instructor;
+	}
+
+	public List<Student> getStudents() {
+		return students;
+	}
+
+	public void setStudents(List<Student> students) {
+		this.students = students;
 	}
 }
