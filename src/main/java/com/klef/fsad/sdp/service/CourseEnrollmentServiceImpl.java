@@ -1,84 +1,90 @@
 package com.klef.fsad.sdp.service;
-	import java.util.List;
-	import java.util.Optional;
-	import org.springframework.beans.factory.annotation.Autowired;
-	import org.springframework.stereotype.Service;
-	import com.klef.fsad.sdp.entity.CourseEnrollment;
-	import com.klef.fsad.sdp.entity.Student;
-	import com.klef.fsad.sdp.entity.Courses;
-	import com.klef.fsad.sdp.repository.CourseEnrollmentRepository;
-	import com.klef.fsad.sdp.repository.StudentRepository;
-	import com.klef.fsad.sdp.repository.CourseRepository;
-	
-	
-	@Service
-	public class CourseEnrollmentServiceImpl implements CourseEnrollmentService {
 
-	    @Autowired
-	    private CourseEnrollmentRepository enrollmentRepo;
+import java.util.List;
+import java.util.Optional;
 
-	    @Autowired
-	    private StudentRepository studentRepo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-	    @Autowired
-	    private CourseRepository courseRepo;
+import com.klef.fsad.sdp.entity.CourseEnrollment;
+import com.klef.fsad.sdp.entity.Student;
+import com.klef.fsad.sdp.entity.Courses;
+import com.klef.fsad.sdp.repository.CourseEnrollmentRepository;
+import com.klef.fsad.sdp.repository.StudentRepository;
+import com.klef.fsad.sdp.repository.CourseRepository;
 
-	    @Override
-	    public String enrollStudent(int studentId, long courseId) {
+@Service
+public class CourseEnrollmentServiceImpl implements CourseEnrollmentService {
 
-	        CourseEnrollment existing =
-	                enrollmentRepo.findByStudentIdAndCourseId(studentId, courseId);
+	@Autowired
+	private CourseEnrollmentRepository repository;
 
-	        if (existing != null) {
-	            return "Student already enrolled!";
-	        }
+	@Autowired
+	private StudentRepository studentrepository;
 
-	        Optional<Student> studentOpt = studentRepo.findById(studentId);
-	        Optional<Courses> courseOpt = courseRepo.findById((int)courseId);
+	@Autowired
+	private CourseRepository courserepository;
 
-	        if (studentOpt.isPresent() && courseOpt.isPresent()) {
+	@Override
+	public String enrollStudent(int studentId, long courseId) {
 
-	            CourseEnrollment enrollment = new CourseEnrollment();
-	            enrollment.setStudent(studentOpt.get());
-	            enrollment.setCourse(courseOpt.get());
-	            enrollment.setProgress(0);
+		CourseEnrollment ce = repository.findByStudentIdAndCourseId(studentId, courseId);
 
-	            enrollmentRepo.save(enrollment);
+		if(ce != null) {
+			return "already enrolled";
+		}
 
-	            return "Enrollment successful!";
-	        } else {
-	            return "Student or Course not found!";
-	        }
-	    }
+		Optional<Student> optionalstudent = studentrepository.findById(studentId);
+		Optional<Courses> optionalcourse = courserepository.findById((int)courseId);
 
-	    @Override
-	    public List<CourseEnrollment> getStudentCourses(int studentId) {
-	        return enrollmentRepo.findByStudentId(studentId);
-	    }
+		if(optionalstudent.isPresent() && optionalcourse.isPresent()) {
 
-	    @Override
-	    public List<CourseEnrollment> getCourseStudents(long courseId) {
-	        return enrollmentRepo.findByCourseId(courseId);
-	    }
+			CourseEnrollment c = new CourseEnrollment();
+			c.setStudent(optionalstudent.get());
+			c.setCourse(optionalcourse.get());
+			c.setProgress(0);
 
-	    @Override
-	    public String updateProgress(int studentId, long courseId, int progress) {
+			repository.save(c);
 
-	        CourseEnrollment enrollment =
-	                enrollmentRepo.findByStudentIdAndCourseId(studentId, courseId);
-
-	        if (enrollment != null) {
-	            enrollment.setProgress(progress);
-	            enrollmentRepo.save(enrollment);
-	            return "Progress updated!";
-	        } else {
-	            return "Enrollment not found!";
-	        }
-	    }
-
-	    @Override
-	    public boolean isStudentEnrolled(int studentId, long courseId) {
-	        return enrollmentRepo
-	                .findByStudentIdAndCourseId(studentId, courseId) != null; // if the student is registered it returns the true value which mean it is not null
-	    }
+			return "added Successfully";
+		}else {
+			return "Not found";
+		}
 	}
+
+	@Override
+	public List<CourseEnrollment> getStudentCourses(int studentId) {
+		return repository.findByStudentId(studentId);
+	}
+
+	@Override
+	public List<CourseEnrollment> getCourseStudents(long courseId) {
+		return repository.findByCourseId(courseId);
+	}
+
+	@Override
+	public String updateProgress(int studentId, long courseId, int progress) {
+
+		CourseEnrollment ce = repository.findByStudentIdAndCourseId(studentId, courseId);
+
+		if(ce != null) {
+			ce.setProgress(progress);
+			repository.save(ce);
+			return "Updated Successfully";
+		}else {
+			return "Not found";
+		}
+	}
+
+	@Override
+	public boolean isStudentEnrolled(int studentId, long courseId) {
+
+		CourseEnrollment ce = repository.findByStudentIdAndCourseId(studentId, courseId);
+
+		if(ce != null) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+}

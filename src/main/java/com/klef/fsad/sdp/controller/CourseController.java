@@ -24,19 +24,17 @@ public class CourseController
 	}
 
 	@GetMapping("/all")
-	public ResponseEntity<?> viewAllCourses() {
-	    try {
-	        List<Courses> courses = courseService.viewAllCourses();
-
-	        if (!courses.isEmpty()) {
-	            return ResponseEntity.ok().body(courses); 
-	        } else {
-	            return ResponseEntity.status(404).body("No Courses Found");
-	        }
-
-	    } catch (Exception e) {
-	        return ResponseEntity.status(500).body("Error Fetching Courses");
-	    }
+	public ResponseEntity<?> viewAllCourses()
+	{
+		try
+		{
+			List<Courses> courses = courseService.viewAllCourses();
+			return ResponseEntity.ok().body(courses);
+		}
+		catch(Exception e)
+		{
+			return ResponseEntity.status(500).body("Error Fetching Courses");
+		}
 	}
 	
 	@GetMapping("/published")
@@ -45,17 +43,7 @@ public class CourseController
 		try
 		{
 			List<Courses> courses = courseService.getAllPublishedCourses();
-			
-			if(!courses.isEmpty())
-				
-			{
-				return ResponseEntity.ok().body(courses);
-				
-			}else {
-			
-			return ResponseEntity.status(204).body("No Courses Found");
-
-		}
+			return ResponseEntity.ok().body(courses);
 		}
 		catch(Exception e)
 		{
@@ -69,16 +57,7 @@ public class CourseController
 		try
 		{
 			List<Courses> courses = courseService.searchCoursesByKeyword(keyword);
-			
-			if(!courses.isEmpty())
-			{
-				return ResponseEntity.ok().body(courses);
-	
-				
-			}else {
-			
-		return ResponseEntity.status(204).body("No Courses Found");
-		}
+			return ResponseEntity.ok().body(courses);
 		}
 		catch(Exception e)
 		{
@@ -106,11 +85,15 @@ public class CourseController
 		try
 		{
 			Courses course = courseService.getCourseById(id);
+			
 			if(course != null)
 			{
-				return ResponseEntity.ok().body(course.toString());
+				return ResponseEntity.ok().body(course);
 			}
-			return ResponseEntity.status(404).body("Course Not Found");
+			else
+			{
+				return ResponseEntity.status(404).body("Course Not Found");
+			}
 		}
 		catch(Exception e)
 		{
