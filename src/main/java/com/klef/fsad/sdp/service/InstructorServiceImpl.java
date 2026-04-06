@@ -5,12 +5,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.klef.fsad.sdp.dto.InstructorDTO;
 import com.klef.fsad.sdp.entity.Courses;
 import com.klef.fsad.sdp.entity.Instructor;
 import com.klef.fsad.sdp.entity.Student;
-import com.klef.fsad.sdp.repository.InstructorRepository;
 import com.klef.fsad.sdp.repository.CourseRepository;
+import com.klef.fsad.sdp.repository.InstructorRepository;
 
 @Service
 public class InstructorServiceImpl implements InstructorService
@@ -22,24 +21,9 @@ public class InstructorServiceImpl implements InstructorService
 	private CourseRepository courseRepository;
 
 	@Override
-	public InstructorDTO verifyInstructorLogin(String email, String pwd) 
+	public Instructor verifyInstructorLogin(String email, String pwd) 
 	{
-		Instructor ins = instructorRepository.findByEmailAndPassword(email, pwd);
-		
-		if(ins != null)
-		{
-			InstructorDTO dto = new InstructorDTO();
-			dto.setId(ins.getId());
-			dto.setUsername(ins.getUsername());
-			dto.setEmail(ins.getEmail());
-			dto.setFirstName(ins.getFirstName());
-			dto.setLastName(ins.getLastName());
-			dto.setGender(ins.getGender());
-			dto.setLocation(ins.getLocation());
-			
-			return dto;
-		}
-		return null;
+		return instructorRepository.findByEmailAndPassword(email, pwd);
 	}
 
 	@Override
@@ -67,49 +51,5 @@ public class InstructorServiceImpl implements InstructorService
 			return course.getStudents();
 		}
 		return null;
-	}
-
-	@Override
-	public List<Courses> viewPublishedCourses() {
-		return courseRepository.findPublishedCourses();
-	}
-
-	@Override
-	public List<Courses> searchCourses(String keyword) {
-		return courseRepository.searchCourses(keyword);
-	}
-
-	@Override
-	public String updateCourseStatus(int id, boolean status) {
-		int updated = courseRepository.updateCourseStatus(id, status);
-		if(updated > 0)
-		{
-			return "Course Status Updated Successfully";
-		}
-		return "Course Not Found";
-	}
-
-	@Override
-	public List<InstructorDTO> viewAllInstructors() 
-	{
-		List<Instructor> instructors = instructorRepository.findAll();
-		
-		List<InstructorDTO> dtoList = new java.util.ArrayList<>();
-		
-		for(Instructor ins : instructors)
-		{
-			InstructorDTO dto = new InstructorDTO();
-			dto.setId(ins.getId());
-			dto.setUsername(ins.getUsername());
-			dto.setEmail(ins.getEmail());
-			dto.setFirstName(ins.getFirstName());
-			dto.setLastName(ins.getLastName());
-			dto.setGender(ins.getGender());
-			dto.setLocation(ins.getLocation());
-			
-			dtoList.add(dto);
-		}
-		
-		return dtoList;
 	}
 }
