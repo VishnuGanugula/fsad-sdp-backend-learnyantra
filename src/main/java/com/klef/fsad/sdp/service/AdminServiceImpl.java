@@ -43,15 +43,6 @@ public class AdminServiceImpl implements AdminService {
 		return instructorRepository.findAll();
 	}
 
-	@Override
-	public boolean deleteInstructor(int id) {
-		if(instructorRepository.existsById(id))
-		{
-			instructorRepository.deleteById(id);
-			return true;
-		}
-		return false;
-	}
 
 	@Override
 	public List<Student> viewAllStudents() {
@@ -102,6 +93,21 @@ Optional<Student> optional = studentRepository.findById(id);
 				.collect(Collectors.toList());
 	}
 
+	@Override
+	public boolean deleteInstructor(int  id) {
+		 Optional<Instructor> optionalInstructor = instructorRepository.findById(id);
+
+	        if (optionalInstructor.isPresent()) {
+	            instructorRepository.delete(optionalInstructor.get());
+	            return true;
+	        } else {
+	            return false;
+	        }
+	    }
+
+	
+}
+
 	
 
-}
+

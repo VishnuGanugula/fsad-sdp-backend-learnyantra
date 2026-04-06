@@ -1,6 +1,8 @@
 package com.klef.fsad.sdp.service;
 
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.klef.fsad.sdp.entity.Courses;
@@ -20,8 +22,7 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public List<Courses> getCoursesByInstructor(int instructorId) {
-        // Uses your custom @Query to find courses for a specific instructor
-        return courseRepository.findCoursesByInstructor(instructorId);
+        return courseRepository.findCoursesByInstructor(instructorId);//it uses  custom @Query to find courses for a specific instructor
     }
 
     @Override
@@ -36,14 +37,12 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public List<Courses> getAllPublishedCourses() {
-        // Uses your @Query to filter only visible courses for students
-        return courseRepository.findPublishedCourses();
+        return courseRepository.findPublishedCourses(); //it uses @Query to filter only visible courses for students
     }
 
     @Override
     public List<Courses> searchCoursesByKeyword(String keyword) {
-        // Uses your LIKE %?1% search query
-        return courseRepository.searchCourses(keyword);
+        return courseRepository.searchCourses(keyword);// it uses LIKE %?1% search query
     }
 
     @Override
@@ -58,10 +57,15 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public String deleteCourse(int id) {
-        if (courseRepository.existsById(id)) {
-            courseRepository.deleteById(id);
+
+        Optional<Courses> optionalCourse = courseRepository.findById(id);
+
+        if (optionalCourse.isPresent()) {
+            Courses course = optionalCourse.get();
+            courseRepository.delete(course);
             return "Course deleted successfully.";
+        } else {
+            return "Course not found.";
         }
-        return "Course not found.";
     }
 }

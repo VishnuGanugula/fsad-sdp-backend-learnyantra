@@ -29,11 +29,7 @@ public class CourseController
 		try
 		{
 			List<Courses> courses = courseService.viewAllCourses();
-			if(courses == null || courses.isEmpty())
-			{
-				return ResponseEntity.status(204).body("No Courses Found");
-			}
-			return ResponseEntity.ok(courses);
+			return ResponseEntity.ok().body(courses);
 		}
 		catch(Exception e)
 		{
@@ -47,13 +43,7 @@ public class CourseController
 		try
 		{
 			List<Courses> courses = courseService.getAllPublishedCourses();
-			
-			if(courses == null || courses.isEmpty())
-			{
-				return ResponseEntity.status(204).body("No Courses Found");
-			}
-			
-			return ResponseEntity.ok(courses);
+			return ResponseEntity.ok().body(courses);
 		}
 		catch(Exception e)
 		{
@@ -67,13 +57,7 @@ public class CourseController
 		try
 		{
 			List<Courses> courses = courseService.searchCoursesByKeyword(keyword);
-			
-			if(courses == null || courses.isEmpty())
-			{
-				return ResponseEntity.status(204).body("No Courses Found");
-			}
-			
-			return ResponseEntity.ok(courses);
+			return ResponseEntity.ok().body(courses);
 		}
 		catch(Exception e)
 		{
@@ -87,7 +71,7 @@ public class CourseController
 		try
 		{
 			String output = courseService.toggleCourseStatus(id, status);
-			return ResponseEntity.ok(output);
+			return ResponseEntity.ok().body(output);
 		}
 		catch(Exception e)
 		{
@@ -101,11 +85,15 @@ public class CourseController
 		try
 		{
 			Courses course = courseService.getCourseById(id);
+			
 			if(course != null)
 			{
-				return ResponseEntity.ok(course);
+				return ResponseEntity.ok().body(course);
 			}
-			return ResponseEntity.status(404).body("Course Not Found");
+			else
+			{
+				return ResponseEntity.status(404).body("Course Not Found");
+			}
 		}
 		catch(Exception e)
 		{
