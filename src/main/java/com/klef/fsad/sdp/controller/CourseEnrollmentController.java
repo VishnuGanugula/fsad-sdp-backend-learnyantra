@@ -4,17 +4,10 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.klef.fsad.sdp.entity.CourseEnrollment;
-import com.klef.fsad.sdp.entity.Courses;
-import com.klef.fsad.sdp.service.StudentService;
+import com.klef.fsad.sdp.service.CourseEnrollmentService;
 
 @RestController
 @RequestMapping("enrollmentapi")
@@ -22,7 +15,7 @@ import com.klef.fsad.sdp.service.StudentService;
 public class CourseEnrollmentController
 {
 	@Autowired
-	private StudentService studentService;
+	private CourseEnrollmentService courseEnrollmentService;
 
 	@GetMapping("/")
 	public String enrollmentHome()
@@ -31,16 +24,12 @@ public class CourseEnrollmentController
 	}
 
 	@PostMapping("/enroll/{studentid}/{courseid}")
-	public ResponseEntity<String> enrollInCourse(@PathVariable int studentid, @PathVariable long courseid)
+	public ResponseEntity<String> enrollStudent(@PathVariable int studentid, @PathVariable long courseid)
 	{
 		try
 		{
-			String output = studentService.enrollInCourse(studentid, courseid);
-			if(output.contains("Successfully"))
-			{
-				return ResponseEntity.status(201).body(output);
-			}
-			return ResponseEntity.status(400).body(output);
+			String output = courseEnrollmentService.enrollStudent(studentid, courseid);
+			return ResponseEntity.status(200).body(output);
 		}
 		catch(Exception e)
 		{
@@ -48,57 +37,59 @@ public class CourseEnrollmentController
 		}
 	}
 
-	@DeleteMapping("/unenroll/{studentid}/{courseid}")
-	public ResponseEntity<String> unenrollFromCourse(@PathVariable int studentid, @PathVariable long courseid)
+	@GetMapping("/studentcourses/{studentid}")
+	public ResponseEntity<?> getStudentCourses(@PathVariable int studentid)
 	{
 		try
 		{
-			String output = studentService.unenrollFromCourse(studentid, courseid);
-			if(output.contains("Successfully"))
-			{
-				return ResponseEntity.status(200).body(output);
-			}
-			return ResponseEntity.status(400).body(output);
+			List<CourseEnrollment> list = courseEnrollmentService.getStudentCourses(studentid);
+			return ResponseEntity.ok().body(list);
 		}
 		catch(Exception e)
 		{
-			return ResponseEntity.status(500).body("Internal Server Error");
+			return ResponseEntity.status(500).body("Error Fetching Data");
 		}
 	}
 
-	@GetMapping("/enrollments/{studentid}")
-	public ResponseEntity<?> getStudentEnrollments(@PathVariable int studentid)
+	@GetMapping("/coursestudents/{courseid}")
+	public ResponseEntity<?> getCourseStudents(@PathVariable long courseid)
 	{
 		try
 		{
-			List<CourseEnrollment> enrollments = studentService.getStudentEnrollments(studentid);
-			if(enrollments == null || enrollments.isEmpty())
-			{
-				return ResponseEntity.status(204).body("No Enrollments Found");
-			}
-			return ResponseEntity.status(200).body(enrollments);
+			List<CourseEnrollment> list = courseEnrollmentService.getCourseStudents(courseid);
+			return ResponseEntity.ok().body(list);
 		}
 		catch(Exception e)
 		{
-			return ResponseEntity.status(500).body("Internal Server Error");
+			return ResponseEntity.status(500).body("Error Fetching Data");
 		}
 	}
 
-	@GetMapping("/enrolled-courses/{studentid}")
-	public ResponseEntity<?> getStudentEnrolledCourses(@PathVariable int studentid)
+	@PutMapping("/updateprogress/{studentid}/{courseid}/{progress}")
+	public ResponseEntity<String> updateProgress(@PathVariable int studentid, @PathVariable long courseid, @PathVariable int progress)
 	{
 		try
 		{
-			List<Courses> courses = studentService.getStudentEnrolledCourses(studentid);
-			if(courses == null || courses.isEmpty())
-			{
-				return ResponseEntity.status(204).body("No Courses Enrolled");
-			}
-			return ResponseEntity.status(200).body(courses);
+			String output = courseEnrollmentService.updateProgress(studentid, courseid, progress);
+			return ResponseEntity.ok().body(output);
 		}
 		catch(Exception e)
 		{
-			return ResponseEntity.status(500).body("Internal Server Error");
+			return ResponseEntity.status(500).body("Error Updating Progress");
+		}
+	}
+
+	@GetMapping("/check/{studentid}/{courseid}")
+	public ResponseEntity<?> isStudentEnrolled(@PathVariable int studentid, @PathVariable long courseid)
+	{
+		try
+		{
+			boolean status = courseEnrollmentService.isStudentEnrolled(studentid, courseid);
+			return ResponseEntity.ok().body(status);
+		}
+		catch(Exception e)
+		{
+			return ResponseEntity.status(500).body("Error Checking Enrollment");
 		}
 	}
 }

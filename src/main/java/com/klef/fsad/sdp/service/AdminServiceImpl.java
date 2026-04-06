@@ -95,24 +95,19 @@ Optional<Student> optional = studentRepository.findById(id);
 	}
 
 	@Override
-	public boolean deleteInstructor(int  id) {
+	public boolean deleteInstructor(int  id)
+	{
 		 Optional<Instructor> optionalInstructor = instructorRepository.findById(id);
 
 	        if (optionalInstructor.isPresent()) {
 	            instructorRepository.delete(optionalInstructor.get());
 	            return true;
-	        } else {
+	        } 
+	        else
+	        {	        	
 	            return false;
 	        }
-	    }
-
-	@Override
-	public List<InstructorDTO> viewAllInstructorsDTO() {
-		// TODO Auto-generated method stub
-		return null;
 	}
-
-	
 }
 
 	

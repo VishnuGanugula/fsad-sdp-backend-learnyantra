@@ -2,14 +2,7 @@ package com.klef.fsad.sdp.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.klef.fsad.sdp.entity.Student;
 import com.klef.fsad.sdp.service.StudentService;
@@ -19,7 +12,6 @@ import com.klef.fsad.sdp.service.StudentService;
 @CrossOrigin("*")
 public class StudentController 
 {
-	
 	@Autowired
 	private StudentService studentservice;
 	
@@ -41,17 +33,18 @@ public class StudentController
 		{
 			return ResponseEntity.status(500).body("Internal Server Error");
 		}
-		
 	}
 	
-	@PostMapping("login")
+	@PostMapping("/login")
 	public ResponseEntity<?> verifystudentlogin(@RequestBody Student student)
 	{
-		try {
+		try 
+		{
 			Student s = studentservice.verfiyStudentLogin(student.getEmail(), student.getPassword());
-			if(s!=null)
-		    {
-				return ResponseEntity.status(200).body(s);
+			
+			if(s != null)
+			{
+				return ResponseEntity.ok().body(s);
 			}
 			else
 			{
@@ -70,11 +63,15 @@ public class StudentController
 		try
 		{
 			Student student = studentservice.getStudentById(id);
+			
 			if(student != null)
 			{
-				return ResponseEntity.status(200).body(student);
+				return ResponseEntity.ok().body(student);
 			}
-			return ResponseEntity.status(404).body("Student Not Found");
+			else
+			{
+				return ResponseEntity.status(404).body("Student Not Found");
+			}
 		}
 		catch (Exception e)
 		{
@@ -82,18 +79,17 @@ public class StudentController
 		}
 	}
 	
-	  @PostMapping("/updateprofile")
-	   public ResponseEntity<String> studentupdateprofile(@RequestBody Student s)
-	   {
-		   try
-		   {
-			   String output = studentservice.updateStudentProfile(s);
-			   return ResponseEntity.status(201).body(output);
-		   }
-		   catch(Exception e)
-		   {
-			   return ResponseEntity.status(500).body("Internal Server Error");
-		   }
-	   }
-	
+	@PostMapping("/updateprofile")
+	public ResponseEntity<String> studentupdateprofile(@RequestBody Student s)
+	{
+		try
+		{
+			String output = studentservice.updateStudentProfile(s);
+			return ResponseEntity.ok().body(output);
+		}
+		catch(Exception e)
+		{
+			return ResponseEntity.status(500).body("Internal Server Error");
+		}
+	}
 }

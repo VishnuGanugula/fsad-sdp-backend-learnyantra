@@ -1,6 +1,8 @@
 package com.klef.fsad.sdp.service;
 
 import java.util.List;
+
+import com.klef.fsad.sdp.dto.PublishedCourseWithInstructorDTO;
 import com.klef.fsad.sdp.entity.Courses;
 
 public interface CourseService {
@@ -11,6 +13,7 @@ public interface CourseService {
     
     // Student Actions (Discovery)
     public List<Courses> getAllPublishedCourses();
+    public List<PublishedCourseWithInstructorDTO> getPublishedCoursesWithInstructorDetails();
     public List<Courses> searchCoursesByKeyword(String keyword);
     
     // General Actions

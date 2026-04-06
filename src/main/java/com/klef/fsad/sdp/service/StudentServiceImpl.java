@@ -127,7 +127,7 @@ public class StudentServiceImpl implements StudentService
 		}
 		catch(Exception e)
 		{
-			return "Error during unenrollment: " + e.getMessage();
+			return "Error during unenrollment " ;
 		}
 	}
 
@@ -147,3 +147,4 @@ public class StudentServiceImpl implements StudentService
 	}
 
 }
+

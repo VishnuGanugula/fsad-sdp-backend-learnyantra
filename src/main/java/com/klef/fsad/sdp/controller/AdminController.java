@@ -134,18 +134,30 @@ public class AdminController
 	      }
 	}
 
-	@GetMapping("/status")
-	public ResponseEntity<?> getStatus() 
+	@GetMapping("/studentcount")
+	public ResponseEntity<?> getStudentCount() 
 	{
 		try 
 		{
 			long studentCount = adminService.getStudentCount();
-			long instructorCount = adminService.getInstructorCount();
-			return ResponseEntity.ok("Students: " + studentCount + ", Instructors: " + instructorCount);
+			return ResponseEntity.ok("Students: " + studentCount);
 		} 
 		catch (Exception e) 
 		{
-			return ResponseEntity.status(500).body("Error fetching status");
+			return ResponseEntity.status(500).body("Error fetching student count");
+		}
+	}
+	@GetMapping("/instructorcount")
+	public ResponseEntity<?> getInstructorCount() 
+	{
+		try 
+		{
+			long instructorCount = adminService.getInstructorCount();
+			return ResponseEntity.ok("Instructors: " + instructorCount);
+		} 
+		catch (Exception e) 
+		{
+			return ResponseEntity.status(500).body("Error fetching instructor count");
 		}
 	}
 	

@@ -15,7 +15,6 @@ public interface AdminService {
 	public String addInstructor(Instructor instructor);
     public List<Instructor> viewAllInstructors();
     public boolean deleteInstructor(int id); 
-    public List<InstructorDTO> viewAllInstructorsDTO();
     
     //Student Management
     public List<Student> viewAllStudents();

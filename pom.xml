@@ -78,7 +78,7 @@
 <dependency>
 <groupId>org.projectlombok</groupId>
 <artifactId>lombok</artifactId>
-<version>1.18.30</version>
+<version>1.18.32</version>
 <optional>true</optional>
 </dependency>
 <!--  SLF4J (managed by Spring Boot BOM — explicit version not needed)  -->
@@ -94,13 +94,16 @@
 <artifactId>maven-compiler-plugin</artifactId>
 <version>3.10.1</version>
 <configuration>
-<source>21</source>
-<target>21</target>
+<source>25</source>
+<target>25</target>
+<compilerArgs>
+<arg>--add-opens=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED</arg>
+</compilerArgs>
 <annotationProcessorPaths>
 <annotationProcessorPath>
 <groupId>org.projectlombok</groupId>
 <artifactId>lombok</artifactId>
-<version>1.18.30</version>
+<version>1.18.32</version>
 </annotationProcessorPath>
 </annotationProcessorPaths>
 </configuration>

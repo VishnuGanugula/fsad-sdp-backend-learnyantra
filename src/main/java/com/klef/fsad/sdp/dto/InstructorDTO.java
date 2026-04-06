@@ -3,12 +3,9 @@ package com.klef.fsad.sdp.dto;
 public class InstructorDTO 
 {
 	private int id;
-	private String username;
 	private String email;
 	private String firstName;
 	private String lastName;
-	private String gender;
-	private String location;
 
 	public int getId() {
 		return id;
@@ -16,14 +13,6 @@ public class InstructorDTO
 
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
 	}
 
 	public String getEmail() {
@@ -50,19 +39,4 @@ public class InstructorDTO
 		this.lastName = lastName;
 	}
 
-	public String getGender() {
-		return gender;
-	}
-
-	public void setGender(String gender) {
-		this.gender = gender;
-	}
-
-	public String getLocation() {
-		return location;
-	}
-
-	public void setLocation(String location) {
-		this.location = location;
-	}
 }
