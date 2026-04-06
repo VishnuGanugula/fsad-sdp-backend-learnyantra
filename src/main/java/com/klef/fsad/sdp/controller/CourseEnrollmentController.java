@@ -22,6 +22,21 @@ public class CourseEnrollmentController
 	{
 		return "Course Enrollment Controller Demo";
 	}
+
+	@PostMapping("/enroll/{studentid}/{courseid}")
+	public ResponseEntity<String> enrollStudent(@PathVariable int studentid, @PathVariable long courseid)
+	{
+		try
+		{
+			String output = courseEnrollmentService.enrollStudent(studentid, courseid);
+			return ResponseEntity.status(200).body(output);
+		}
+		catch(Exception e)
+		{
+			return ResponseEntity.status(500).body("Internal Server Error");
+		}
+	}
+
 	@GetMapping("/studentcourses/{studentid}")
 	public ResponseEntity<?> getStudentCourses(@PathVariable int studentid)
 	{
