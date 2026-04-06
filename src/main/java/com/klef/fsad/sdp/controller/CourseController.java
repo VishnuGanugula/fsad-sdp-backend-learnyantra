@@ -75,10 +75,11 @@ public class CourseController
 				return ResponseEntity.ok().body(courses);
 	
 				
-			}else {
-			
-		return ResponseEntity.status(204).body("No Courses Found");
-		}
+			}
+			else 
+			{	
+		        return ResponseEntity.status(204).body("No Courses Found");
+		     }
 		}
 		catch(Exception e)
 		{

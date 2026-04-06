@@ -89,10 +89,11 @@ public class InstructorServiceImpl implements InstructorService
 		return "Course Not Found";
 	}
 
+
+
 	@Override
-	public List<InstructorDTO> viewAllInstructors() 
-	{
-		List<Instructor> instructors = instructorRepository.findAll();
+	public List<InstructorDTO> viewAllInstructorsDTO() {
+        List<Instructor> instructors = instructorRepository.findAll();
 		
 		List<InstructorDTO> dtoList = new java.util.ArrayList<>();
 		
@@ -112,4 +113,6 @@ public class InstructorServiceImpl implements InstructorService
 		
 		return dtoList;
 	}
+
+	
 }

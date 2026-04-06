@@ -120,7 +120,7 @@ public class InstructorController
   {
 	  try
 	  {
-		  List<InstructorDTO> list = instructorService.viewAllInstructors();
+		  List<InstructorDTO> list = instructorService.viewAllInstructorsDTO();
 		  
 		  if(list == null || list.isEmpty())
 		  {

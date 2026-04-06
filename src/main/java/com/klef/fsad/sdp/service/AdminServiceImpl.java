@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.klef.fsad.sdp.dto.InstructorDTO;
 import com.klef.fsad.sdp.dto.StudentDTO;
 import com.klef.fsad.sdp.entity.Admin;
 import com.klef.fsad.sdp.entity.Instructor;
@@ -104,6 +105,12 @@ Optional<Student> optional = studentRepository.findById(id);
 	            return false;
 	        }
 	    }
+
+	@Override
+	public List<InstructorDTO> viewAllInstructorsDTO() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	
 }

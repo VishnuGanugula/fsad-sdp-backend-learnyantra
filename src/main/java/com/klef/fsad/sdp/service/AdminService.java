@@ -2,6 +2,7 @@ package com.klef.fsad.sdp.service;
 
 import java.util.List;
 
+import com.klef.fsad.sdp.dto.InstructorDTO;
 import com.klef.fsad.sdp.dto.StudentDTO;
 import com.klef.fsad.sdp.entity.Admin;
 import com.klef.fsad.sdp.entity.Instructor;
@@ -14,6 +15,7 @@ public interface AdminService {
 	public String addInstructor(Instructor instructor);
     public List<Instructor> viewAllInstructors();
     public boolean deleteInstructor(int id); 
+    public List<InstructorDTO> viewAllInstructorsDTO();
     
     //Student Management
     public List<Student> viewAllStudents();
