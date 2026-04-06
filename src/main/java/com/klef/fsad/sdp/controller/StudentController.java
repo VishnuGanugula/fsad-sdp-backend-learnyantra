@@ -14,7 +14,6 @@ public class StudentController
 {
 	@Autowired
 	private StudentService studentservice;
-	
 	@GetMapping("/")
 	public String studenthome() 
 	{
@@ -92,4 +91,13 @@ public class StudentController
 			return ResponseEntity.status(500).body("Internal Server Error");
 		}
 	}
+	@PostMapping("/enroll")
+	public ResponseEntity<String> enrollInCourse(
+	        @RequestParam int studentId,
+	        @RequestParam long courseId)
+	{
+	    String result = studentservice.enrollInCourse(studentId, courseId);
+	    return ResponseEntity.ok(result);
+	}
+
 }

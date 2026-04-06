@@ -25,32 +25,6 @@ public class CourseEnrollmentServiceImpl implements CourseEnrollmentService {
 	@Autowired
 	private CourseRepository courserepository;
 
-	@Override
-	public String enrollStudent(int studentId, long courseId) {
-
-		CourseEnrollment ce = repository.findByStudentIdAndCourseId(studentId, courseId);
-
-		if(ce != null) {
-			return "already enrolled";
-		}
-
-		Optional<Student> optionalstudent = studentrepository.findById(studentId);
-		Optional<Courses> optionalcourse = courserepository.findById((int)courseId);
-
-		if(optionalstudent.isPresent() && optionalcourse.isPresent()) {
-
-			CourseEnrollment c = new CourseEnrollment();
-			c.setStudent(optionalstudent.get());
-			c.setCourse(optionalcourse.get());
-			c.setProgress(0);
-
-			repository.save(c);
-
-			return "added Successfully";
-		}else {
-			return "Not found";
-		}
-	}
 
 	@Override
 	public List<CourseEnrollment> getStudentCourses(int studentId) {
