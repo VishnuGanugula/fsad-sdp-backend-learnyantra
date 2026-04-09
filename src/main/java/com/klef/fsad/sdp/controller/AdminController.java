@@ -14,11 +14,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.klef.fsad.sdp.dto.EmailDTO;
 import com.klef.fsad.sdp.dto.StudentDTO;
 import com.klef.fsad.sdp.entity.Admin;
 import com.klef.fsad.sdp.entity.Instructor;
 import com.klef.fsad.sdp.entity.Student;
 import com.klef.fsad.sdp.service.AdminService;
+import com.klef.fsad.sdp.service.EmailService;
 
 @RestController
 @RequestMapping("adminapi")
@@ -57,12 +59,51 @@ public class AdminController
 		}
 	}
 	
+//	@PostMapping("/addinstructor")
+//	public ResponseEntity<String> addinstructor(@RequestBody Instructor instructor)
+//	{
+//		   try
+//		   {
+//			   String output = adminService.addInstructor(instructor);
+//			   return ResponseEntity.status(201).body(output);
+//		   }
+//		   catch(Exception e)
+//		   {
+//			   return ResponseEntity.status(500).body("Error adding instructor: " + e.getMessage());
+//		   }
+//	}
+	
+	@Autowired
+	private EmailService emailService;
+	
 	@PostMapping("/addinstructor")
 	public ResponseEntity<String> addinstructor(@RequestBody Instructor instructor)
 	{
 		   try
 		   {
 			   String output = adminService.addInstructor(instructor);
+
+			   EmailDTO emailDTO = new EmailDTO();
+			   emailDTO.setTo(instructor.getEmail());
+			   emailDTO.setSubject("LMS Instructor Account Credentials");
+			   emailDTO.setText(
+				   "Dear " + instructor.getFirstName() + " " + instructor.getLastName() + ",\n\n" +
+				   "Your instructor account has been created successfully by admin.\n\n" +
+				   "Login Credentials:\n" +
+				   "Email: " + instructor.getEmail() + "\n" +
+				   "Password: " + instructor.getPassword() + "\n\n" +
+				   "Please login and change your password after first sign-in.\n\n" +
+				   "Regards,\nLMS Admin"
+			   );
+
+			   try
+			   {
+				   emailService.sendEmail(emailDTO);
+			   }
+			   catch (Exception emailException)
+			   {
+				   System.out.println("Instructor created but email sending failed for: " + instructor.getEmail());
+			   }
 			   return ResponseEntity.status(201).body(output);
 		   }
 		   catch(Exception e)
@@ -70,6 +111,9 @@ public class AdminController
 			   return ResponseEntity.status(500).body("Error adding instructor: " + e.getMessage());
 		   }
 	}
+
+	
+	
 	@GetMapping("/viewallinstructors")
 	public ResponseEntity<?> viewallinstructors()
 	{
