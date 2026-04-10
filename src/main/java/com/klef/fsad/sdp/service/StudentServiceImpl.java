@@ -146,5 +146,11 @@ public class StudentServiceImpl implements StudentService
 				.collect(Collectors.toList());
 	}
 
+	@Override
+	public Student displayStudentById(int id) {
+		// TODO Auto-generated method stub
+		return studentRepository.findById(id).orElse(null);
+	}
+
 }
 

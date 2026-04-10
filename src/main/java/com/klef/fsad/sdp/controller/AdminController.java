@@ -25,185 +25,147 @@ import com.klef.fsad.sdp.service.EmailService;
 @RestController
 @RequestMapping("adminapi")
 @CrossOrigin("*")
-public class AdminController 
-{
+public class AdminController {
 	@Autowired
 	private AdminService adminService;
-	
+
 	@GetMapping("/")
-	public String home()
-	{
+	public String home() {
 		return "LMS Backend Project";
 	}
-	
+
 	@PostMapping("/login")
-	public ResponseEntity<?> checkadminlogin(@RequestBody Admin admin)
-	{
-		try
-		{
+	public ResponseEntity<?> checkadminlogin(@RequestBody Admin admin) {
+		try {
 			Admin a = adminService.verifyAdminLogin(admin.getUsername(), admin.getPassword());
-		
-		    if(a != null)
-		    {
-		    	return ResponseEntity.status(200).body(a);
-		    }
-		    else
-		    {
-		    	return ResponseEntity.status(401).body("Login Invalid");
-		    }
-		}
-		catch (Exception e) 
-		{
+
+			if (a != null) {
+				return ResponseEntity.status(200).body(a);
+			} else {
+				return ResponseEntity.status(401).body("Login Invalid");
+			}
+		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			return ResponseEntity.status(500).body("Internal Server Error");
 		}
 	}
-	
-//	@PostMapping("/addinstructor")
-//	public ResponseEntity<String> addinstructor(@RequestBody Instructor instructor)
-//	{
-//		   try
-//		   {
-//			   String output = adminService.addInstructor(instructor);
-//			   return ResponseEntity.status(201).body(output);
-//		   }
-//		   catch(Exception e)
-//		   {
-//			   return ResponseEntity.status(500).body("Error adding instructor: " + e.getMessage());
-//		   }
-//	}
-	
+
+	// @PostMapping("/addinstructor")
+	// public ResponseEntity<String> addinstructor(@RequestBody Instructor
+	// instructor)
+	// {
+	// try
+	// {
+	// String output = adminService.addInstructor(instructor);
+	// return ResponseEntity.status(201).body(output);
+	// }
+	// catch(Exception e)
+	// {
+	// return ResponseEntity.status(500).body("Error adding instructor: " +
+	// e.getMessage());
+	// }
+	// }
+
 	@Autowired
 	private EmailService emailService;
-	
+
 	@PostMapping("/addinstructor")
-	public ResponseEntity<String> addinstructor(@RequestBody Instructor instructor)
-	{
-		   try
-		   {
-			   String output = adminService.addInstructor(instructor);
+	public ResponseEntity<String> addinstructor(@RequestBody Instructor instructor) {
+		try {
+			String output = adminService.addInstructor(instructor);
 
-			   EmailDTO emailDTO = new EmailDTO();
-			   emailDTO.setTo(instructor.getEmail());
-			   emailDTO.setSubject("LMS Instructor Account Credentials");
-			   emailDTO.setText(
-				   "Dear " + instructor.getFirstName() + " " + instructor.getLastName() + ",\n\n" +
-				   "Your instructor account has been created successfully by admin.\n\n" +
-				   "Login Credentials:\n" +
-				   "Email: " + instructor.getEmail() + "\n" +
-				   "Password: " + instructor.getPassword() + "\n\n" +
-				   "Please login and change your password after first sign-in.\n\n" +
-				   "Regards,\nLMS Admin"
-			   );
+			EmailDTO emailDTO = new EmailDTO();
+			emailDTO.setTo(instructor.getEmail());
+			emailDTO.setSubject("LMS Instructor Account Credentials");
+			emailDTO.setText(
+					"Dear " + instructor.getFirstName() + " " + instructor.getLastName() + ",\n\n" +
+							"Your instructor account has been created successfully by admin.\n\n" +
+							"Login Credentials:\n" +
+							"Email: " + instructor.getEmail() + "\n" +
+							"Password: " + instructor.getPassword() + "\n\n" +
+							"Please login and change your password after first sign-in.\n\n" +
+							"Regards,\nLMS Admin");
 
-			   try
-			   {
-				   emailService.sendEmail(emailDTO);
-			   }
-			   catch (Exception emailException)
-			   {
-				   System.out.println("Instructor created but email sending failed for: " + instructor.getEmail());
-			   }
-			   return ResponseEntity.status(201).body(output);
-		   }
-		   catch(Exception e)
-		   {
-			   return ResponseEntity.status(500).body("Error adding instructor: " + e.getMessage());
-		   }
+			try {
+				emailService.sendEmail(emailDTO);
+			} catch (Exception emailException) {
+				System.out.println("Instructor created but email sending failed for: " + instructor.getEmail());
+			}
+			return ResponseEntity.status(201).body(output);
+		} catch (Exception e) {
+			return ResponseEntity.status(500).body("Error adding instructor: " + e.getMessage());
+		}
 	}
 
-	
-	
 	@GetMapping("/viewallinstructors")
-	public ResponseEntity<?> viewallinstructors()
-	{
-	    try
-	    {
-	        List<Instructor> instructors = adminService.viewAllInstructors();
-	        return ResponseEntity.ok(instructors);
-	    }
-	    catch(Exception e)
-	    {
-	        return ResponseEntity.status(500).body("Error Fetching Instructors");
-	    }
+	public ResponseEntity<?> viewallinstructors() {
+		try {
+			List<Instructor> instructors = adminService.viewAllInstructors();
+			return ResponseEntity.ok(instructors);
+		} catch (Exception e) {
+			return ResponseEntity.status(500).body("Error Fetching Instructors");
+		}
 	}
+
 	@DeleteMapping("/deleteinstructor/{id}")
 	public ResponseEntity<String> deleteInstructor(@PathVariable int id) {
-	    boolean deleted = adminService.deleteInstructor(id);
+		boolean deleted = adminService.deleteInstructor(id);
 
-	    if (deleted) {
-	        return ResponseEntity.ok("Instructor Deleted Successfully");
-	    } else {
-	        return ResponseEntity.status(404).body("Instructor Not Found");
-	    }
-	}
-	@GetMapping("/viewallstudents")
-	public ResponseEntity<?> viewAllStudents()
-	{
-	    try
-	    {
-	        List<Student> students = adminService.viewAllStudents();
-	        return ResponseEntity.ok(students);
-	    }
-	    catch(Exception e)
-	    {
-	        return ResponseEntity.status(500).body("Error Fetching Students");
-	    }
-	}
-
-	@GetMapping("/displayallstudentsdto")
-	public ResponseEntity<?> displayAllStudentsDTO()
-	{
-		try
-		{
-			List<StudentDTO> students = adminService.displayAllStudentsDTO();
-			return ResponseEntity.ok(students);
+		if (deleted) {
+			return ResponseEntity.ok("Instructor Deleted Successfully");
+		} else {
+			return ResponseEntity.status(404).body("Instructor Not Found");
 		}
-		catch(Exception e)
-		{
+	}
+
+	@GetMapping("/viewallstudents")
+	public ResponseEntity<?> viewAllStudents() {
+		try {
+			List<Student> students = adminService.viewAllStudents();
+			return ResponseEntity.ok(students);
+		} catch (Exception e) {
 			return ResponseEntity.status(500).body("Error Fetching Students");
 		}
 	}
+
+	@GetMapping("/displayallstudentsdto")
+	public ResponseEntity<?> displayAllStudentsDTO() {
+		try {
+			List<StudentDTO> students = adminService.displayAllStudentsDTO();
+			return ResponseEntity.ok(students);
+		} catch (Exception e) {
+			return ResponseEntity.status(500).body("Error Fetching Students");
+		}
+	}
+
 	@DeleteMapping("/deletestudent")
-	public ResponseEntity<String> deletestudent(@RequestParam int id)
-	{
-	      try
-	      {
-	          String output = adminService.deleteStudent(id);
-	          return ResponseEntity.status(200).body(output);
-	      }
-	      catch(Exception e)
-	      {
-	          return ResponseEntity.status(500).body("Internal Server Error");
-	      }
+	public ResponseEntity<String> deletestudent(@RequestParam int id) {
+		try {
+			String output = adminService.deleteStudent(id);
+			return ResponseEntity.status(200).body(output);
+		} catch (Exception e) {
+			return ResponseEntity.status(500).body("Internal Server Error");
+		}
 	}
 
 	@GetMapping("/studentcount")
-	public ResponseEntity<?> getStudentCount() 
-	{
-		try 
-		{
+	public ResponseEntity<?> getStudentCount() {
+		try {
 			long studentCount = adminService.getStudentCount();
 			return ResponseEntity.ok("Students: " + studentCount);
-		} 
-		catch (Exception e) 
-		{
+		} catch (Exception e) {
 			return ResponseEntity.status(500).body("Error fetching student count");
 		}
 	}
+
 	@GetMapping("/instructorcount")
-	public ResponseEntity<?> getInstructorCount() 
-	{
-		try 
-		{
+	public ResponseEntity<?> getInstructorCount() {
+		try {
 			long instructorCount = adminService.getInstructorCount();
 			return ResponseEntity.ok("Instructors: " + instructorCount);
-		} 
-		catch (Exception e) 
-		{
+		} catch (Exception e) {
 			return ResponseEntity.status(500).body("Error fetching instructor count");
 		}
 	}
-	
 
 }

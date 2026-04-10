@@ -20,17 +20,17 @@ import com.klef.fsad.sdp.repository.StudentRepository;
 public class AdminServiceImpl implements AdminService {
 	@Autowired
 	private AdminRepository adminRepository;
-	
+
 	@Autowired
 	private InstructorRepository instructorRepository;
-	
+
 	@Autowired
 	private StudentRepository studentRepository;
 
 	@Override
 	public Admin verifyAdminLogin(String username, String password) {
 		return adminRepository.findByUsernameAndPassword(username, password);
-		
+
 	}
 
 	@Override
@@ -44,7 +44,6 @@ public class AdminServiceImpl implements AdminService {
 		return instructorRepository.findAll();
 	}
 
-
 	@Override
 	public List<Student> viewAllStudents() {
 		return studentRepository.findAll();
@@ -52,15 +51,12 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	public String deleteStudent(int id) {
-Optional<Student> optional = studentRepository.findById(id);
-		
-		if(optional.isPresent())
-		{
+		Optional<Student> optional = studentRepository.findById(id);
+
+		if (optional.isPresent()) {
 			studentRepository.deleteById(id);
 			return "Student Deleted Successfully";
-		}
-		else
-		{
+		} else {
 			return "Student ID Not Found to Delete";
 		}
 	}
@@ -95,21 +91,14 @@ Optional<Student> optional = studentRepository.findById(id);
 	}
 
 	@Override
-	public boolean deleteInstructor(int  id)
-	{
-		 Optional<Instructor> optionalInstructor = instructorRepository.findById(id);
+	public boolean deleteInstructor(int id) {
+		Optional<Instructor> optionalInstructor = instructorRepository.findById(id);
 
-	        if (optionalInstructor.isPresent()) {
-	            instructorRepository.delete(optionalInstructor.get());
-	            return true;
-	        } 
-	        else
-	        {	        	
-	            return false;
-	        }
+		if (optionalInstructor.isPresent()) {
+			instructorRepository.delete(optionalInstructor.get());
+			return true;
+		} else {
+			return false;
+		}
 	}
 }
-
-	
-
-

@@ -154,4 +154,19 @@ public class StudentController
 		  }
 	  }
 	
+	  @GetMapping("/display/{id}")
+		public ResponseEntity<?> displaystudentbyId(@PathVariable int id)
+		{
+			Student s = studentservice.displayStudentById(id);
+			if(s != null)
+			{
+				//return ResponseEntity.ok().body(u.toString()); // object will be display in string format
+				return ResponseEntity.ok().body(s);
+			}
+			else
+			{
+				return ResponseEntity.ok().body("User Id Not Found"); // string type
+			}
+		}
+		
 }

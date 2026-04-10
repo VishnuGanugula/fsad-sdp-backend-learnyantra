@@ -21,6 +21,7 @@ public  interface StudentService
 
 	public List<CourseEnrollment> getStudentEnrollments(int studentId);
 	public List<Courses> getStudentEnrolledCourses(int studentId);
+	public Student displayStudentById(int id);
 	
 }
 
