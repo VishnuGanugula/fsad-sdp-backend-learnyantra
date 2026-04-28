@@ -40,7 +40,7 @@ public class AuthController
             String role = userDetails.getAuthorities()
                     .iterator().next().getAuthority();
 
-            // Match Password (now all are hashed via migration)
+            // Match Password (BCrypt encoded)
             boolean isValid = passwordEncoder.matches(request.getPassword(), userDetails.getPassword());
 
             if (!isValid)
@@ -54,7 +54,6 @@ public class AuthController
             // Fetch full user object
             Object userObj = service.getUserByLoginAndRole(request.getLogin(), request.getRole());
 
-            // RETURN user also
             return ResponseEntity.ok(
                 Map.of(
                     "token", token,
