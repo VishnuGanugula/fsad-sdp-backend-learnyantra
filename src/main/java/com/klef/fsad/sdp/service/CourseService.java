@@ -9,7 +9,7 @@ public interface CourseService {
     // Instructor Actions
     public String addCourse(Courses course);
     public List<Courses> getCoursesByInstructor(int instructorId);
-    public String toggleCourseStatus(int id, boolean status);
+    public String toggleCourseStatus(long id, boolean status);
     
     // Student Actions (Discovery)
     public List<Courses> getAllPublishedCourses();
@@ -18,6 +18,6 @@ public interface CourseService {
     
     // General Actions
     public List<Courses> viewAllCourses(); // For Admin
-    public Courses getCourseById(int id);
-    public String deleteCourse(int id);
+    public Courses getCourseById(long id);
+    public String deleteCourse(long id);
 }

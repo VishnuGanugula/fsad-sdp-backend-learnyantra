@@ -34,14 +34,14 @@ public class CourseEnrollmentServiceImpl implements CourseEnrollmentService {
         }
 
         Optional<Student> optionalStudent = studentrepository.findById(studentId);
-        Optional<Courses> optionalCourse = courserepository.findById((int) courseId);
+        Optional<Courses> optionalCourse = courserepository.findById(courseId);
 
         if (optionalStudent.isPresent() && optionalCourse.isPresent()) {
 
             CourseEnrollment c = new CourseEnrollment();
             c.setStudent(optionalStudent.get());
             c.setCourse(optionalCourse.get());
-            c.setProgress(0);
+            c.setProgressPercentage(0);
 
             repository.save(c);
 
@@ -49,6 +49,18 @@ public class CourseEnrollmentServiceImpl implements CourseEnrollmentService {
         }
 
         return "Student or Course Not Found";
+    }
+
+    @Override
+    public String unenrollStudent(int studentId, long courseId) {
+
+        CourseEnrollment ce = repository.findByStudentIdAndCourseId(studentId, courseId);
+        if (ce == null) {
+            return "Not Enrolled In This Course";
+        }
+
+        repository.delete(ce);
+        return "Unenrolled Successfully";
     }
 
     @Override
@@ -67,7 +79,7 @@ public class CourseEnrollmentServiceImpl implements CourseEnrollmentService {
         CourseEnrollment ce = repository.findByStudentIdAndCourseId(studentId, courseId);
 
         if (ce != null) {
-            ce.setProgress(progress);
+            ce.setProgressPercentage(progress);
             repository.save(ce);
             return "Updated Successfully";
         }

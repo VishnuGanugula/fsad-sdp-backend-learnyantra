@@ -13,10 +13,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.klef.fsad.sdp.dto.EmailDTO;
 import com.klef.fsad.sdp.entity.CourseEnrollment;
 import com.klef.fsad.sdp.entity.Courses;
 import com.klef.fsad.sdp.entity.Student;
 import com.klef.fsad.sdp.service.StudentService;
+import com.klef.fsad.sdp.service.EmailService;
 
 @RestController
 @RequestMapping("studentapi")
@@ -26,6 +28,9 @@ public class StudentController
 	
 	@Autowired
 	private StudentService studentservice;
+
+	@Autowired
+	private EmailService emailService;
 	
 	@GetMapping("/")
 	public String studenthome() 
@@ -39,7 +44,27 @@ public class StudentController
 		try
 		{
 			String output = studentservice.studentRegistration(s);
-			return ResponseEntity.status(201).body(output);
+			if (output.contains("Successfully")) {
+				EmailDTO emailDTO = new EmailDTO();
+				emailDTO.setTo(s.getEmail());
+				emailDTO.setSubject("Welcome to Learn Yantra");
+				emailDTO.setText(
+						"Dear " + s.getFirstName() + " " + s.getLastName() + ",\n\n" +
+						"Thanks for joining us at Learn Yantra! We're happy to have you on board.\n\n" +
+						"Your student account has been created successfully. You can now log in, explore courses, and start learning at your own pace.\n\n" +
+						"If you need any help, our team is here for you.\n\n" +
+						"Warm regards,\n" +
+						"Learn Yantra Team");
+
+				try {
+					emailService.sendEmail(emailDTO);
+				} catch (Exception emailException) {
+					System.out.println("Student created but welcome email sending failed for: " + s.getEmail());
+				}
+				return ResponseEntity.status(201).body(output);
+			} else {
+				return ResponseEntity.status(400).body(output);
+			}
 		}
 		catch (Exception e) 
 		{
@@ -48,25 +73,8 @@ public class StudentController
 		
 	}
 	
-	@PostMapping("login")
-	public ResponseEntity<?> verifystudentlogin(@RequestBody Student student)
-	{
-		try {
-			Student s = studentservice.verfiyStudentLogin(student.getEmail(), student.getPassword());
-			if(s!=null)
-		    {
-				return ResponseEntity.status(200).body(s);
-			}
-			else
-			{
-				return ResponseEntity.status(401).body("Login Invalid");
-			}
-		}
-		catch (Exception e) 
-		{
-			return ResponseEntity.status(500).body("Internal Server Error");
-		}
-	}
+	// Legacy login removed. Use /auth/login for JWT authentication.
+
 	
 	  @PostMapping("/updateprofile")
 	   public ResponseEntity<String> studentupdateprofile(@RequestBody Student s)

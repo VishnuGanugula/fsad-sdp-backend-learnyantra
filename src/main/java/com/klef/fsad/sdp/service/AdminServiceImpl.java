@@ -11,10 +11,13 @@ import com.klef.fsad.sdp.dto.InstructorDTO;
 import com.klef.fsad.sdp.dto.StudentDTO;
 import com.klef.fsad.sdp.entity.Admin;
 import com.klef.fsad.sdp.entity.Instructor;
+import com.klef.fsad.sdp.entity.CourseEnrollment;
 import com.klef.fsad.sdp.entity.Student;
 import com.klef.fsad.sdp.repository.AdminRepository;
 import com.klef.fsad.sdp.repository.InstructorRepository;
+import com.klef.fsad.sdp.repository.CourseEnrollmentRepository;
 import com.klef.fsad.sdp.repository.StudentRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Service
 public class AdminServiceImpl implements AdminService {
@@ -27,6 +30,12 @@ public class AdminServiceImpl implements AdminService {
 	@Autowired
 	private StudentRepository studentRepository;
 
+	@Autowired
+	private CourseEnrollmentRepository courseEnrollmentRepository;
+
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+
 	@Override
 	public Admin verifyAdminLogin(String username, String password) {
 		return adminRepository.findByUsernameAndPassword(username, password);
@@ -35,6 +44,7 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	public String addInstructor(Instructor instructor) {
+		instructor.setPassword(passwordEncoder.encode(instructor.getPassword()));
 		instructorRepository.save(instructor);
 		return "Instructor Added Successfully";
 	}
@@ -45,8 +55,10 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	public List<Student> viewAllStudents() {
-		return studentRepository.findAll();
+	public List<StudentDTO> viewAllStudents() {
+		return studentRepository.findAll().stream()
+				.map(this::studentToStudentDTO)
+				.collect(Collectors.toList());
 	}
 
 	@Override
@@ -75,19 +87,32 @@ public class AdminServiceImpl implements AdminService {
 	public StudentDTO studentToStudentDTO(Student student) {
 		StudentDTO dto = new StudentDTO();
 		dto.setId(student.getId());
+		dto.setUsername(student.getUsername());
+		dto.setEmail(student.getEmail());
 		dto.setFirstName(student.getFirstName());
 		dto.setLastName(student.getLastName());
+		dto.setContact(student.getContact());
 		dto.setGender(student.getGender());
 		dto.setLocation(student.getLocation());
+
+		List<CourseEnrollment> enrollments = courseEnrollmentRepository.findByStudentId(student.getId());
+		if (enrollments == null || enrollments.isEmpty()) {
+			dto.setCourseTitle("Not Enrolled Yet");
+		} else {
+			String courseTitles = enrollments.stream()
+					.map(enrollment -> enrollment.getCourse() != null ? enrollment.getCourse().getTitle() : null)
+					.filter(title -> title != null && !title.isBlank())
+					.distinct()
+					.reduce((left, right) -> left + ", " + right)
+					.orElse("Not Enrolled Yet");
+			dto.setCourseTitle(courseTitles);
+		}
 		return dto;
 	}
 
 	@Override
 	public List<StudentDTO> displayAllStudentsDTO() {
-		List<Student> students = viewAllStudents();
-		return students.stream()
-				.map(this::studentToStudentDTO)
-				.collect(Collectors.toList());
+		return viewAllStudents();
 	}
 
 	@Override

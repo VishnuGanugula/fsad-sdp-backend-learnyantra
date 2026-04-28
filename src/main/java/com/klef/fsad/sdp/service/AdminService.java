@@ -20,7 +20,7 @@ public interface AdminService {
     public boolean deleteInstructor(int id);
 
     // Student Management
-    public List<Student> viewAllStudents();
+    public List<StudentDTO> viewAllStudents();
 
     public String deleteStudent(int id);
 

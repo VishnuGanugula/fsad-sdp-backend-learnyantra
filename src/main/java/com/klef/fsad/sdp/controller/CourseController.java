@@ -93,7 +93,7 @@ public class CourseController
 	}
 	
 	@PutMapping("/updatestatus/{id}/{status}")
-	public ResponseEntity<String> updateCourseStatus(@PathVariable int id, @PathVariable boolean status)
+	public ResponseEntity<String> updateCourseStatus(@PathVariable long id, @PathVariable boolean status)
 	{
 		try
 		{
@@ -107,7 +107,7 @@ public class CourseController
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<?> getCourseById(@PathVariable int id)
+	public ResponseEntity<?> getCourseById(@PathVariable long id)
 	{
 		try
 		{

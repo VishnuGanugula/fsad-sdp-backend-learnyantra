@@ -12,7 +12,7 @@ import com.klef.fsad.sdp.entity.Courses;
 import jakarta.transaction.Transactional;
 
 @Repository
-public interface CourseRepository extends JpaRepository<Courses, Integer> {
+public interface CourseRepository extends JpaRepository<Courses, Long> {
     
     @Query("SELECT c FROM Courses c WHERE c.instructor.id = ?1")
     List<Courses> findCoursesByInstructor(int instructorId);
@@ -29,5 +29,5 @@ public interface CourseRepository extends JpaRepository<Courses, Integer> {
     @Modifying
     @Transactional
     @Query("UPDATE Courses c SET c.isPublished=?2 WHERE c.id=?1")
-    int updateCourseStatus(int id, boolean status);
+    int updateCourseStatus(long id, boolean status);
 }

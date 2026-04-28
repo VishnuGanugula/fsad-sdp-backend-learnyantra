@@ -37,6 +37,24 @@ public class CourseEnrollmentController
 		}
 	}
 
+	@DeleteMapping("/unenroll/{studentid}/{courseid}")
+	public ResponseEntity<String> unenrollStudent(@PathVariable int studentid, @PathVariable long courseid)
+	{
+		try
+		{
+			String output = courseEnrollmentService.unenrollStudent(studentid, courseid);
+			if(output.contains("Successfully"))
+			{
+				return ResponseEntity.status(200).body(output);
+			}
+			return ResponseEntity.status(400).body(output);
+		}
+		catch(Exception e)
+		{
+			return ResponseEntity.status(500).body("Internal Server Error");
+		}
+	}
+
 	@GetMapping("/studentcourses/{studentid}")
 	public ResponseEntity<?> getStudentCourses(@PathVariable int studentid)
 	{

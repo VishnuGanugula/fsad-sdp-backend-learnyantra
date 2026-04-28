@@ -1,6 +1,7 @@
 package com.klef.fsad.sdp.entity;
 
 import java.util.List;
+import java.math.BigDecimal;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -26,6 +27,9 @@ public class Courses
     
     @Column(length=100,nullable=false)
     private String category;
+
+    @Column(precision = 10, scale = 2)
+    private BigDecimal price;
     
     @Column(nullable=false)
     private boolean isPublished;
@@ -67,6 +71,14 @@ public class Courses
 
 	public void setCategory(String category) {
 		this.category = category;
+	}
+
+	public BigDecimal getPrice() {
+		return price;
+	}
+
+	public void setPrice(BigDecimal price) {
+		this.price = price;
 	}
 
 	public boolean isPublished() {

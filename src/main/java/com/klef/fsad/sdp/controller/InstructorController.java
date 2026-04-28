@@ -25,27 +25,8 @@ public class InstructorController
 	   return "Instructor Controller Demo";
   }
   
-  @PostMapping("login")
-  public ResponseEntity<?> verifyinstructorlogin(@RequestBody Instructor instructor)
-  {
-	   try
-		{
-			Instructor ins = instructorService.verifyInstructorLogin(instructor.getEmail(), instructor.getPassword());
-		
-		    if(ins!=null)
-		    {
-		    	return ResponseEntity.status(200).body(ins);
-		    }
-		    else
-		    {
-		    	return ResponseEntity.status(401).body("Login Invalid");
-		    }
-		}
-		catch (Exception e) 
-		{
-			return ResponseEntity.status(500).body("Internal Server Error");
-		}
-  }
+  // Legacy login removed. Use /auth/login for JWT authentication.
+
   
 @PostMapping("/addcourse")
 public ResponseEntity<String> addCourse(@RequestBody Courses course)

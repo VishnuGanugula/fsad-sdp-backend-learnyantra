@@ -34,7 +34,7 @@ public class CourseEnrollment
 	private LocalDateTime enrolledAt;
 	
 	@Column(nullable = false)
-	private double progress = 0.0;
+	private double progressPercentage = 0.0;
 
 	public long getId() {
 		return id;
@@ -68,17 +68,17 @@ public class CourseEnrollment
 		this.enrolledAt = enrolledAt;
 	}
 
-	public double getProgress() {
-		return progress;
+	public double getProgressPercentage() {
+		return progressPercentage;
 	}
 
-	public void setProgress(double progress) {
-		this.progress = progress;
+	public void setProgressPercentage(double progressPercentage) {
+		this.progressPercentage = progressPercentage;
 	}
 
 	@Override
 	public String toString() {
 		return "CourseEnrollment [id=" + id + ", student=" + student.getId() + ", course=" + course.getId()
-				+ ", enrolledAt=" + enrolledAt + ", progress=" + progress + "]";
+				+ ", enrolledAt=" + enrolledAt + ", progressPercentage=" + progressPercentage + "]";
 	}
 }

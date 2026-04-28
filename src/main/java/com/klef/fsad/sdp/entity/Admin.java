@@ -12,7 +12,7 @@ public class Admin
    @Id
    @Column(length = 50)
    private String username;
-   @Column(length = 50,nullable = false)
+   @Column(length = 255, nullable = false)
    private String password;
    
    public String getUsername() {

@@ -21,7 +21,7 @@ public class Instructor
 	private int id;
 	@Column(nullable = false, length = 50, unique = true)
 	private String username;
-	@Column(nullable = false, length = 50, unique = false)
+	@Column(nullable = false, length = 255, unique = false)
 	private String password;
 	@Column(nullable = false, length = 50, unique = true)
 	private String email;

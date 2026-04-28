@@ -31,7 +31,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public String toggleCourseStatus(int id, boolean status) {
+    public String toggleCourseStatus(long id, boolean status) {
         // Uses your @Modifying @Query to update publication status
         int rows = courseRepository.updateCourseStatus(id, status);
         if (rows > 0) {
@@ -70,12 +70,12 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public Courses getCourseById(int id) {
+    public Courses getCourseById(long id) {
         return courseRepository.findById(id).orElse(null);
     }
 
     @Override
-    public String deleteCourse(int id) {
+    public String deleteCourse(long id) {
 
         Optional<Courses> optionalCourse = courseRepository.findById(id);
 

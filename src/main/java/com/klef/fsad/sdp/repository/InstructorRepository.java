@@ -10,4 +10,7 @@ public interface InstructorRepository extends JpaRepository<Instructor, Integer>
 {
 	// SELECT i FROM Instructor i WHERE i.email=?1 AND i.password=?2
     Instructor findByEmailAndPassword(String email, String password);
+    
+    java.util.Optional<Instructor> findByEmail(String email);
+    java.util.Optional<Instructor> findByUsername(String username);
 }

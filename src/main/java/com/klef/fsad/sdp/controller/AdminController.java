@@ -34,21 +34,8 @@ public class AdminController {
 		return "LMS Backend Project";
 	}
 
-	@PostMapping("/login")
-	public ResponseEntity<?> checkadminlogin(@RequestBody Admin admin) {
-		try {
-			Admin a = adminService.verifyAdminLogin(admin.getUsername(), admin.getPassword());
+	// Legacy login removed. Use /auth/login for JWT authentication.
 
-			if (a != null) {
-				return ResponseEntity.status(200).body(a);
-			} else {
-				return ResponseEntity.status(401).body("Login Invalid");
-			}
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-			return ResponseEntity.status(500).body("Internal Server Error");
-		}
-	}
 
 	// @PostMapping("/addinstructor")
 	// public ResponseEntity<String> addinstructor(@RequestBody Instructor
@@ -121,7 +108,7 @@ public class AdminController {
 	@GetMapping("/viewallstudents")
 	public ResponseEntity<?> viewAllStudents() {
 		try {
-			List<Student> students = adminService.viewAllStudents();
+			List<StudentDTO> students = adminService.viewAllStudents();
 			return ResponseEntity.ok(students);
 		} catch (Exception e) {
 			return ResponseEntity.status(500).body("Error Fetching Students");

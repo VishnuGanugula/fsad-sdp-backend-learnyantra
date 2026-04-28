@@ -20,9 +20,8 @@ public interface StudentRepository extends JpaRepository<Student, Integer>
 	
 	 // ---------------- FIND BY ----------------
 
-    // Derived Method	
-	// JPQL: SELECT s FROM student s WHERE s.email=?1;
-	Student findByEmail(String email);
+	java.util.Optional<Student> findByEmail(String email);
+	java.util.Optional<Student> findByUsername(String username);
 	
 	@Query("SELECT s FROM Student s WHERE s.email=?1")
 	Student getStudentByEmail(String email);
@@ -32,8 +31,7 @@ public interface StudentRepository extends JpaRepository<Student, Integer>
 	@Query("DELETE FROM Student s WHERE s.email=?1")
 	int deleteStudentByEmail(String email);
 	
-	//SELCT s FROM Student s WHERE s.usernamel=?1
-	Student findByUsername(String username);
+
 	
 	@Query("SELECT s FROM Student s WHERE s.username=?1")
 	Student getStudentByUsername(String Username);
@@ -97,6 +95,9 @@ public interface StudentRepository extends JpaRepository<Student, Integer>
 
     @Query("SELECT COUNT(s)>0 FROM Student s WHERE s.email=?1")
     boolean checkEmailExists(String email);
+
+    boolean existsByUsername(String username);
+    boolean existsByContact(String contact);
     
     // ---------------- DELETE Query ----------------
 
