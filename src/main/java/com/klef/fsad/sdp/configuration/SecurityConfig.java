@@ -25,8 +25,7 @@ import com.klef.fsad.sdp.service.UserService;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig 
-{
+public class SecurityConfig {
     @Autowired
     private JwtFilter jwtFilter;
 
@@ -34,76 +33,67 @@ public class SecurityConfig
     private UserService userService;
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception 
-    {
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .cors(cors -> cors.configurationSource(corsConfigurationSource())) //enable CORS
-            .csrf(csrf -> csrf.disable())
-            .authenticationProvider(authenticationProvider())
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers(
-                    "/swagger-ui/**",
-                    "/v3/api-docs/**",
-                    "/swagger-ui.html",
-                    "/auth/**",
-                    "/studentapi/registration",
-                    "/instructorapi/registration",
-                    "/uploads/**",
-                    "/adminapi/studentcount",
-                    "/adminapi/instructorcount",
-                    "/courseapi/published-with-instructor"
-                ).permitAll()
-                .requestMatchers("/api/**").authenticated()
+                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // enable CORS
+                .csrf(csrf -> csrf.disable())
+                .authenticationProvider(authenticationProvider())
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(
+                                "/swagger-ui/**",
+                                "/v3/api-docs/**",
+                                "/swagger-ui.html",
+                                "/auth/**",
+                                "/studentapi/registration",
+                                "/instructorapi/registration",
+                                "/uploads/**",
+                                "/adminapi/studentcount",
+                                "/adminapi/instructorcount",
+                                "/courseapi/published-with-instructor")
+                        .permitAll()
+                        .requestMatchers("/api/**").authenticated()
 
-                .requestMatchers("/adminapi/**").hasAuthority("ADMIN")
-                .requestMatchers("/studentapi/**").hasAuthority("STUDENT")
-                .requestMatchers("/instructorapi/**").hasAuthority("INSTRUCTOR")
-                .requestMatchers("/courseapi/**").authenticated()
-                .requestMatchers("/enrollmentapi/**").authenticated()
+                        .requestMatchers("/adminapi/**").hasAuthority("ADMIN")
+                        .requestMatchers("/studentapi/**").hasAuthority("STUDENT")
+                        .requestMatchers("/instructorapi/**").hasAuthority("INSTRUCTOR")
+                        .requestMatchers("/courseapi/**").authenticated()
+                        .requestMatchers("/enrollmentapi/**").authenticated()
 
-                .anyRequest().authenticated()
-            )
-            .sessionManagement(session ->
-                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            )
-            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+                        .anyRequest().authenticated())
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
 
-    @Bean 
-    public AuthenticationProvider authenticationProvider() 
-    { 
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider(); 
+    @Bean
+    public AuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setUserDetailsService(userService);
-        provider.setPasswordEncoder(passwordEncoder()); 
-        return provider; 
+        provider.setPasswordEncoder(passwordEncoder());
+        return provider;
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() 
-    {
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception
-    {
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
 
     @Bean
-    public CorsConfigurationSource corsConfigurationSource() 
-    {
+    public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
 
         config.setAllowedOrigins(List.of(
-            "http://localhost:3000", 
-            "http://localhost:5173", 
-           
-            "http://localhost:3001"
-        ));
-        
+                "http://localhost:3000",
+                "http://localhost:5173",
+                "https://learnyantra.onrender.com",
+                "http://localhost:3001"));
+
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*")); // Allow all headers for dev
         config.setAllowCredentials(true);
