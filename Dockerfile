@@ -6,6 +6,6 @@ RUN mvn clean package -DskipTests
 # Run stage
 FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
-COPY --from=build target/*.jar app.jar
+COPY --from=build target/SpringBootSDPLMSBackendProject-*.jar app.jar
 EXPOSE 2028
 ENTRYPOINT ["java", "-jar", "app.jar"]
