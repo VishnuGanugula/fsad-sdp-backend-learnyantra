@@ -6,7 +6,7 @@
 <!--   FIX: Spring Boot 4.x does not exist. Using latest stable 3.x (Java 21 compatible)   -->
 <version>3.4.4</version>
 <relativePath/>
-<!--   lookup parent from repository   -->
+<!--   lookup parent from repository.   -->
 </parent>
 <groupId>com.klef.fsad.sdp</groupId>
 <artifactId>SpringBootSDPLMSBackendProject</artifactId>
@@ -117,7 +117,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.klef.fsad.sdp.SpringBootSdpBackendProjectApplication</mainClass>
+                    <mainClass>com.klef.fsad.sdp.SpringBootSdplmsBackendProjectApplication</mainClass>
                 </configuration>
             </plugin>
         </plugins>
