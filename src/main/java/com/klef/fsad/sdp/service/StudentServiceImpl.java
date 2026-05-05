@@ -193,6 +193,11 @@ public class StudentServiceImpl implements StudentService
 	}
 
 	@Override
+	public Assignment getAssignmentById(long assignmentId) {
+		return assignmentRepository.findById(assignmentId).orElse(null);
+	}
+
+	@Override
 	public String submitAssignment(Submission submission) {
 		submissionRepository.save(submission);
 		return "Assignment Submitted Successfully";

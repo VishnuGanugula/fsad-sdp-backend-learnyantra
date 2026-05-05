@@ -29,6 +29,7 @@ public class AssignmentController {
     @Autowired
     private FileStorageService fileStorageService;
 
+    // ─── Instructor: Create Assignment ────────────────────────────────────────
     @PostMapping("/add")
     @PreAuthorize("hasAuthority('INSTRUCTOR')")
     public ResponseEntity<String> addAssignment(
@@ -49,7 +50,7 @@ public class AssignmentController {
                 String fileName = fileStorageService.storeFile(questionFile);
                 assignment.setQuestionFileUrl("/uploads/" + fileName);
             }
-            
+
             Courses course = new Courses();
             course.setId(courseId);
             assignment.setCourse(course);
@@ -61,6 +62,7 @@ public class AssignmentController {
         }
     }
 
+    // ─── Student: Submit Assignment (with deadline & duplicate checks) ────────
     @PostMapping("/submit")
     @PreAuthorize("hasAuthority('STUDENT')")
     public ResponseEntity<String> submitAssignment(
@@ -68,15 +70,36 @@ public class AssignmentController {
             @RequestParam("studentId") int studentId,
             @RequestParam("file") MultipartFile file) {
         try {
+            // 1. Load the full assignment to check the deadline
+            Assignment assignment = studentService.getAssignmentById(assignmentId);
+            if (assignment == null) {
+                return ResponseEntity.status(404).body("Assignment not found.");
+            }
+
+            // 2. Deadline enforcement — reject late submissions
+            if (assignment.getDueDate() != null && LocalDateTime.now().isAfter(assignment.getDueDate())) {
+                return ResponseEntity.status(403)
+                        .body("Submission deadline has passed. Due date was: " + assignment.getDueDate());
+            }
+
+            // 3. Prevent duplicate submissions by the same student
+            Submission existing = studentService.getSubmissionStatus(assignmentId, studentId);
+            if (existing != null) {
+                return ResponseEntity.status(409)
+                        .body("You have already submitted this assignment.");
+            }
+
+            // 4. Persist the uploaded file to disk
+            if (file == null || file.isEmpty()) {
+                return ResponseEntity.status(400).body("No file provided. Please attach your submission file.");
+            }
             String fileName = fileStorageService.storeFile(file);
-            
+
+            // 5. Build and persist the submission record
             Submission submission = new Submission();
             submission.setSubmissionUrl("/uploads/" + fileName);
-            
-            Assignment assignment = new Assignment();
-            assignment.setId(assignmentId);
             submission.setAssignment(assignment);
-            
+
             Student student = new Student();
             student.setId(studentId);
             submission.setStudent(student);
@@ -88,29 +111,36 @@ public class AssignmentController {
         }
     }
 
+    // ─── Get Assignments by Course ────────────────────────────────────────────
     @GetMapping("/course/{courseId}")
     @PreAuthorize("hasAnyAuthority('STUDENT', 'INSTRUCTOR')")
     public ResponseEntity<List<Assignment>> getAssignmentsByCourse(@PathVariable long courseId) {
-        List<Assignment> assignments = studentService.getAssignmentsByCourse(courseId);
-        return ResponseEntity.ok(assignments);
+        return ResponseEntity.ok(studentService.getAssignmentsByCourse(courseId));
     }
 
+    // ─── Instructor: Get All Submissions for an Assignment ────────────────────
+    @GetMapping("/submissions/{assignmentId}")
+    @PreAuthorize("hasAuthority('INSTRUCTOR')")
+    public ResponseEntity<List<Submission>> getSubmissionsByAssignment(@PathVariable long assignmentId) {
+        return ResponseEntity.ok(instructorService.getSubmissionsByAssignment(assignmentId));
+    }
+
+    // ─── Instructor: Grade a Submission ───────────────────────────────────────
     @PostMapping("/grade")
     @PreAuthorize("hasAuthority('INSTRUCTOR')")
     public ResponseEntity<String> gradeSubmission(
             @RequestParam("submissionId") long submissionId,
             @RequestParam("grade") double grade,
             @RequestParam("feedback") String feedback) {
-        String result = instructorService.gradeSubmission(submissionId, grade, feedback);
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok(instructorService.gradeSubmission(submissionId, grade, feedback));
     }
 
+    // ─── Student: Check Own Submission Status ─────────────────────────────────
     @GetMapping("/status")
     @PreAuthorize("hasAuthority('STUDENT')")
     public ResponseEntity<Submission> getSubmissionStatus(
             @RequestParam("assignmentId") long assignmentId,
             @RequestParam("studentId") int studentId) {
-        Submission submission = studentService.getSubmissionStatus(assignmentId, studentId);
-        return ResponseEntity.ok(submission);
+        return ResponseEntity.ok(studentService.getSubmissionStatus(assignmentId, studentId));
     }
 }

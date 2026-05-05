@@ -2,6 +2,7 @@ package com.klef.fsad.sdp.entity;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.time.LocalDateTime;
 
 @Entity
@@ -24,12 +25,16 @@ public class Submission {
     @Column(columnDefinition = "TEXT")
     private String feedback;
 
+    // Prevent infinite JSON recursion: include only id, title, maxPoints, dueDate from Assignment
     @ManyToOne
     @JoinColumn(name = "assignment_id", nullable = false)
+    @JsonIgnoreProperties({"course", "instructions", "questionFileUrl", "createdAt"})
     private Assignment assignment;
 
+    // Prevent infinite JSON recursion: include only basic student fields
     @ManyToOne
     @JoinColumn(name = "student_id", nullable = false)
+    @JsonIgnoreProperties({"password", "enrollments", "submissions"})
     private Student student;
 
     // Getters and Setters

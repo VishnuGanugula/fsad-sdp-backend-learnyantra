@@ -26,6 +26,7 @@ public interface StudentService
 	// New logic
 	public List<Module> getModulesByCourse(long courseId);
 	public List<Assignment> getAssignmentsByCourse(long courseId);
+	public Assignment getAssignmentById(long assignmentId);
 	public String submitAssignment(Submission submission);
 	public Submission getSubmissionStatus(long assignmentId, int studentId);
 }

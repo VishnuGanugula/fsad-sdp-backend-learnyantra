@@ -2,6 +2,7 @@ package com.klef.fsad.sdp.entity;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.time.LocalDateTime;
 
 @Entity
@@ -29,6 +30,7 @@ public class Assignment {
 
     @ManyToOne
     @JoinColumn(name = "course_id", nullable = false)
+    @JsonIgnoreProperties({"instructor", "modules", "assignments", "description"})
     private Courses course;
 
     @CreationTimestamp
